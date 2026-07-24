@@ -14,17 +14,13 @@
       --text-yellow: #ffcc00;
       --text-orange: #ff9900;
       --text-gray: #aaaaaa;
-      --badge-ltd: #d90429;     /* 特急レッド */
-      --badge-local: #ffffff;   /* 普通ホワイト */
+      --badge-ltd: #d90429;
+      --badge-local: #ffffff;
       --delay-red: #ff3333;
       --ok-green: #00ff66;
     }
 
-    * { 
-      box-sizing: border-box; 
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: #0d0d0d;
@@ -37,7 +33,6 @@
       padding: 20px;
     }
 
-    /* 画面全体枠 */
     .board-container {
       background-color: var(--bg-board);
       width: 100%;
@@ -188,13 +183,13 @@
       font-size: 1.35rem;
     }
 
-    /* 下段マルチ接続カード */
+    /* 下段マルチ接続カード（高視認性改修） */
     .info-section {
-      background: #080d1a;
-      border: 2px solid #1a2a47;
+      background: #060b18;
+      border: 2px solid #1c2d4a;
       border-radius: 8px;
-      padding: 14px 18px;
-      height: 175px;
+      padding: 12px 18px;
+      height: 185px;
     }
 
     .info-header {
@@ -202,78 +197,126 @@
       justify-content: space-between;
       align-items: center;
       height: 32px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .info-title-box {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .route-badge {
-      background: linear-gradient(135deg, #1da1f2, #0066cc);
+      background: linear-gradient(135deg, #0088ff, #0055cc);
       color: #fff;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 900;
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: 4px;
       font-family: 'Chakra Petch', sans-serif;
+      letter-spacing: 0.5px;
     }
 
     .info-title-text {
       color: #38bdf8;
-      font-size: 1.1rem;
-      font-weight: bold;
+      font-size: 1.25rem;
+      font-weight: 900;
     }
 
     .info-countdown-box {
       background: #000;
       border: 1px solid #2a3a57;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 4px;
       font-family: monospace;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       color: var(--ok-green);
       font-weight: bold;
     }
 
+    /* 3ブロックフロー（メリハリデザイン） */
     .info-connection-flow {
       display: grid;
-      grid-template-columns: 1fr 30px 1.5fr 30px 1fr;
+      grid-template-columns: 1fr 28px 1.5fr 28px 1fr;
       align-items: center;
-      background: #000;
-      border: 1px solid #223355;
-      padding: 10px 15px;
-      border-radius: 6px;
-      height: 100px;
+      gap: 6px;
+      height: 115px;
     }
 
-    .step-box { text-align: center; }
-    .step-station { font-size: 0.85rem; color: var(--text-gray); font-weight: bold; height: 22px; }
-    .step-time {
+    .step-card {
+      background: #111625;
+      border: 1px solid #233555;
+      border-radius: 6px;
+      padding: 8px 6px;
+      height: 115px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+
+    .step-card.highlight {
+      background: #0f1c33;
+      border-color: #38bdf8;
+    }
+
+    .step-station-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .step-station-name {
+      font-size: 1.05rem;
+      color: #e2e8f0;
+      font-weight: 900;
+    }
+
+    .platform-badge {
+      background: #ffcc00;
+      color: #000;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .step-time-main {
       font-family: 'Chakra Petch', sans-serif;
-      font-size: 1.8rem;
-      font-weight: bold;
+      font-size: 2.1rem;
+      font-weight: 700;
       color: var(--text-yellow);
-      height: 38px;
-      line-height: 38px;
+      line-height: 1.1;
+    }
+
+    .step-time-transfer {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-orange);
+      line-height: 1.1;
       white-space: nowrap;
     }
-    .step-label { font-size: 0.85rem; color: #fff; height: 22px; line-height: 22px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    
-    .platform-badge {
-      display: inline-block;
-      background: #222;
-      color: #ffcc00;
-      border: 1px solid #ffcc00;
-      font-size: 0.75rem;
-      padding: 1px 5px;
-      border-radius: 3px;
-      margin-left: 4px;
+
+    .step-sub-label {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
     }
-    
-    .arrow { color: #38bdf8; font-size: 1.5rem; font-weight: bold; text-align: center; }
+
+    .arrow {
+      color: #38bdf8;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -325,12 +368,12 @@
       <div class="cars-info" id="m3-cars">--<span class="cars-unit" id="m3-unit">両</span></div>
     </div>
 
-    <!-- 3. マルチ接続案内カード -->
+    <!-- 3. 高視認性 マルチ接続案内カード -->
     <div class="info-section">
       <div class="info-header">
         <div class="info-title-box">
           <span class="route-badge" id="card-badge">TOKYO ROUTE</span>
-          <span class="info-title-text" id="info-card-title">北千住方面 接続案内（館林乗り換え）</span>
+          <span class="info-title-text" id="info-card-title">北千住方面 接続案内</span>
         </div>
         <div class="info-countdown-box" id="info-countdown">
           あと --:--
@@ -338,29 +381,37 @@
       </div>
 
       <div class="info-connection-flow">
-        <!-- 出発駅 -->
-        <div class="step-box">
-          <div class="step-station"><span id="st-origin">葛生</span> <span class="platform-badge">1番線</span></div>
-          <div class="step-time" id="origin-dep-time">--:--</div>
-          <div class="step-label" id="lbl-origin-line">東武佐野線</div>
+        <!-- 葛生発 -->
+        <div class="step-card">
+          <div class="step-station-row">
+            <span class="step-station-name" id="st-origin">葛生</span>
+            <span class="platform-badge">1番線</span>
+          </div>
+          <div class="step-time-main" id="origin-dep-time">--:--</div>
+          <div class="step-sub-label" id="lbl-origin-line">東武佐野線</div>
         </div>
 
         <div class="arrow">➔</div>
 
-        <!-- 乗換駅・接続点 -->
-        <div class="step-box">
-          <div class="step-station"><span id="st-transfer">館林駅 乗り換え</span> <span class="platform-badge" id="pf-transfer">上りホーム</span></div>
-          <div class="step-time" id="transfer-time" style="color: #ff9900;">--:--着 / --:--発</div>
-          <div class="step-label" id="lbl-transfer-info">--</div>
+        <!-- 乗り換え駅（中央強調） -->
+        <div class="step-card highlight">
+          <div class="step-station-row">
+            <span class="step-station-name" id="st-transfer">館林駅 乗り換え</span>
+            <span class="platform-badge" id="pf-transfer">上り</span>
+          </div>
+          <div class="step-time-transfer" id="transfer-time">--:-- / --:--</div>
+          <div class="step-sub-label" id="lbl-transfer-info" style="color: #ffcc00;">--</div>
         </div>
 
         <div class="arrow">➔</div>
 
-        <!-- 到着駅 -->
-        <div class="step-box">
-          <div class="step-station" id="st-dest">北千住駅 到着</div>
-          <div class="step-time" id="dest-arr-time" style="color: var(--ok-green);">--:--</div>
-          <div class="step-label" id="lbl-dest-arr">到着予定</div>
+        <!-- 目的地到着 -->
+        <div class="step-card">
+          <div class="step-station-row">
+            <span class="step-station-name" id="st-dest">北千住駅 到着</span>
+          </div>
+          <div class="step-time-main" id="dest-arr-time" style="color: var(--ok-green);">--:--</div>
+          <div class="step-sub-label" id="lbl-dest-arr">到着予定</div>
         </div>
       </div>
     </div>
@@ -372,99 +423,107 @@
 
     let displayMode = 0; // 0: 北千住(日), 1: 北千住(英), 2: 佐野発・両毛線小山方面(日), 3: 佐野発・両毛線高崎方面(日)
 
-    // 葛生発 公式全27本
+    // 葛生発 公式平日ダイヤ全29本
     const kuzuFullRoutes = [
-      { time: "05:14", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "05:43", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "06:18", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "06:48", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "07:11", typeJa: "特急", typeEn: "Limited Exp.", badge: "badge-ltd", destJa: "浅草 (リバティ)", destEn: "Asakusa (Revaty)", cars: "3" },
-      { time: "07:22", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "07:54", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "08:34", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "09:23", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "10:22", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "11:22", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "12:22", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "13:22", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "14:22", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "15:22", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "16:15", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "17:10", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "18:05", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "18:38", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "05:10", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "05:45", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "06:13", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "06:36", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "07:08", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "07:36", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "08:01", typeJa: "特急", typeEn: "Limited Exp.", badge: "badge-ltd", destJa: "浅草", destEn: "Asakusa", cars: "3" },
+      { time: "08:13", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "08:41", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "09:05", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "10:08", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "11:08", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "12:08", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "13:08", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "14:08", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "15:06", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "15:41", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "16:09", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "16:41", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "17:11", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "17:40", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "18:06", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "18:39", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
       { time: "19:12", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "19:45", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "20:18", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "20:53", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "21:28", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "22:02", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "22:36", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
-      { time: "23:12", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" }
+      { time: "19:39", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "20:10", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "20:46", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "21:19", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "21:50", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "22:13", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
+      { time: "23:02", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" }
     ];
 
     // ① 北千住方面 接続データ
     const senjuFullRoutes = [
-      { kuzuDep: "05:14", tateArr: "05:48", tateDep: "05:52", senjuArr: "06:58", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "05:43", tateArr: "06:17", tateDep: "06:21", senjuArr: "07:28", noteJa: "区間急行（浅草行）", noteEn: "Section Express for Asakusa" },
-      { kuzuDep: "06:18", tateArr: "06:51", tateDep: "06:55", senjuArr: "07:53", noteJa: "急行（半蔵門線直通）", noteEn: "Express (Direct Hanzomon Line)" },
-      { kuzuDep: "06:48", tateArr: "07:22", tateDep: "07:27", senjuArr: "08:24", noteJa: "特急りょうもう（館林乗換）", noteEn: "Ltd. Exp. Ryomo" },
-      { kuzuDep: "07:11", tateArr: "---",   tateDep: "直通",  senjuArr: "08:38", noteJa: "特急リバティりょうもう（直通）", noteEn: "Direct Ltd. Exp. Revaty" },
-      { kuzuDep: "07:22", tateArr: "07:56", tateDep: "08:02", senjuArr: "09:05", noteJa: "区間急行（浅草行）", noteEn: "Section Express for Asakusa" },
-      { kuzuDep: "07:54", tateArr: "08:28", tateDep: "08:33", senjuArr: "09:35", noteJa: "区間急行（浅草行）", noteEn: "Section Express for Asakusa" },
-      { kuzuDep: "08:34", tateArr: "09:08", tateDep: "09:14", senjuArr: "10:18", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "09:23", tateArr: "09:56", tateDep: "10:02", senjuArr: "11:05", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "10:22", tateArr: "10:55", tateDep: "11:02", senjuArr: "12:05", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "11:22", tateArr: "11:55", tateDep: "12:02", senjuArr: "13:05", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "12:22", tateArr: "12:55", tateDep: "13:02", senjuArr: "14:05", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "13:22", tateArr: "13:55", tateDep: "14:02", senjuArr: "15:05", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "14:22", tateArr: "14:55", tateDep: "15:02", senjuArr: "16:05", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "15:22", tateArr: "15:55", tateDep: "16:02", senjuArr: "17:05", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "16:15", tateArr: "16:48", tateDep: "16:53", senjuArr: "17:58", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "17:10", tateArr: "17:43", tateDep: "17:50", senjuArr: "18:42", noteJa: "特急りょうもう（館林乗換）", noteEn: "Ltd. Exp. Ryomo" },
-      { kuzuDep: "18:05", tateArr: "18:38", tateDep: "18:44", senjuArr: "19:50", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "18:38", tateArr: "19:11", tateDep: "19:17", senjuArr: "20:22", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "19:12", tateArr: "19:45", tateDep: "19:50", senjuArr: "20:44", noteJa: "特急りょうもう（館林乗換）", noteEn: "Ltd. Exp. Ryomo" },
-      { kuzuDep: "19:45", tateArr: "20:18", tateDep: "20:24", senjuArr: "21:30", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "20:18", tateArr: "20:51", tateDep: "20:57", senjuArr: "22:05", noteJa: "普通（浅草行）", noteEn: "Local for Asakusa" },
-      { kuzuDep: "20:53", tateArr: "21:26", tateDep: "21:32", senjuArr: "22:42", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "21:28", tateArr: "22:01", tateDep: "22:07", senjuArr: "23:20", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
-      { kuzuDep: "22:02", tateArr: "22:35", tateDep: "22:41", senjuArr: "23:55", noteJa: "普通（北千住行）", noteEn: "Local for Kita-senju" },
-      { kuzuDep: "22:36", tateArr: "23:09", tateDep: "23:15", senjuArr: "00:28", noteJa: "普通（最終北千住接続）", noteEn: "Local for Kita-senju" },
-      { kuzuDep: "23:12", tateArr: "23:45", tateDep: "---",   senjuArr: "---",   noteJa: "館林止まり（接続なし）", noteEn: "Final train for Tatebayashi" }
+      { kuzuDep: "05:10", tateArr: "05:43", tateDep: "05:52", senjuArr: "06:58", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "05:45", tateArr: "06:17", tateDep: "06:21", senjuArr: "07:28", noteJa: "区間急行（浅草行）", noteEn: "Section Exp. for Asakusa" },
+      { kuzuDep: "06:13", tateArr: "06:46", tateDep: "06:55", senjuArr: "07:53", noteJa: "急行（半蔵門線直通）", noteEn: "Express (Direct Hanzomon)" },
+      { kuzuDep: "06:36", tateArr: "07:10", tateDep: "07:15", senjuArr: "08:14", noteJa: "特急りょうもう", noteEn: "Ltd. Exp. Ryomo" },
+      { kuzuDep: "07:08", tateArr: "07:42", tateDep: "07:50", senjuArr: "08:44", noteJa: "特急リバティ", noteEn: "Ltd. Exp. Revaty" },
+      { kuzuDep: "07:36", tateArr: "08:10", tateDep: "08:15", senjuArr: "09:18", noteJa: "区間急行（浅草行）", noteEn: "Section Exp. for Asakusa" },
+      { kuzuDep: "08:01", tateArr: "---",   tateDep: "直通",  senjuArr: "09:28", noteJa: "特急リバティ（直通）", noteEn: "Direct Ltd. Exp." },
+      { kuzuDep: "08:13", tateArr: "08:46", tateDep: "08:52", senjuArr: "09:55", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "08:41", tateArr: "09:14", tateDep: "09:20", senjuArr: "10:24", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "09:05", tateArr: "09:38", tateDep: "09:44", senjuArr: "10:48", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "10:08", tateArr: "10:41", tateDep: "10:47", senjuArr: "11:51", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "11:08", tateArr: "11:41", tateDep: "11:47", senjuArr: "12:51", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "12:08", tateArr: "12:41", tateDep: "12:47", senjuArr: "13:51", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "13:08", tateArr: "13:41", tateDep: "13:47", senjuArr: "14:51", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "14:08", tateArr: "14:41", tateDep: "14:47", senjuArr: "15:51", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "15:06", tateArr: "15:39", tateDep: "15:45", senjuArr: "16:49", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "15:41", tateArr: "16:14", tateDep: "16:20", senjuArr: "17:24", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "16:09", tateArr: "16:42", tateDep: "16:48", senjuArr: "17:52", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "16:41", tateArr: "17:14", tateDep: "17:20", senjuArr: "18:24", noteJa: "特急りょうもう", noteEn: "Ltd. Exp. Ryomo" },
+      { kuzuDep: "17:11", tateArr: "17:44", tateDep: "17:50", senjuArr: "18:42", noteJa: "特急りょうもう", noteEn: "Ltd. Exp. Ryomo" },
+      { kuzuDep: "17:40", tateArr: "18:13", tateDep: "18:19", senjuArr: "19:23", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "18:06", tateArr: "18:39", tateDep: "18:45", senjuArr: "19:49", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "18:39", tateArr: "19:12", tateDep: "19:18", senjuArr: "20:22", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "19:12", tateArr: "19:45", tateDep: "19:50", senjuArr: "20:44", noteJa: "特急りょうもう", noteEn: "Ltd. Exp. Ryomo" },
+      { kuzuDep: "19:39", tateArr: "20:12", tateDep: "20:18", senjuArr: "21:22", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "20:10", tateArr: "20:43", tateDep: "20:49", senjuArr: "21:55", noteJa: "普通（浅草行）", noteEn: "Local for Asakusa" },
+      { kuzuDep: "20:46", tateArr: "21:19", tateDep: "21:25", senjuArr: "22:31", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "21:19", tateArr: "21:52", tateDep: "21:58", senjuArr: "23:05", noteJa: "普通（久喜行）", noteEn: "Local for Kuki" },
+      { kuzuDep: "21:50", tateArr: "22:23", tateDep: "22:29", senjuArr: "23:40", noteJa: "普通（北千住行）", noteEn: "Local for Kita-senju" },
+      { kuzuDep: "22:13", tateArr: "22:46", tateDep: "22:52", senjuArr: "00:08", noteJa: "普通（北千住行）", noteEn: "Local for Kita-senju" },
+      { kuzuDep: "23:02", tateArr: "23:35", tateDep: "---",   senjuArr: "---",   noteJa: "館林止まり", noteEn: "Final train" }
     ];
 
     // ② 佐野駅乗り換え JR両毛線（小山方面：下り/2番線）接続データ
     const sanoOyamaRoutes = [
-      { kuzuDep: "05:43", sanoArr: "05:51", sanoDep: "06:01", oyamaArr: "06:33", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "06:18", sanoArr: "06:26", sanoDep: "06:37", oyamaArr: "07:11", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "06:48", sanoArr: "06:56", sanoDep: "07:07", oyamaArr: "07:38", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "07:22", sanoArr: "07:30", sanoDep: "07:39", oyamaArr: "08:14", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "07:54", sanoArr: "08:02", sanoDep: "08:13", oyamaArr: "08:48", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "08:34", sanoArr: "08:42", sanoDep: "08:52", oyamaArr: "09:25", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "16:15", sanoArr: "16:23", sanoDep: "16:32", oyamaArr: "17:04", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "17:10", sanoArr: "17:18", sanoDep: "17:31", oyamaArr: "18:04", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "18:05", sanoArr: "18:13", sanoDep: "18:22", oyamaArr: "18:55", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "18:38", sanoArr: "18:46", sanoDep: "18:58", oyamaArr: "19:30", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "19:12", sanoArr: "19:20", sanoDep: "19:28", oyamaArr: "20:00", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "19:45", sanoArr: "19:53", sanoDep: "20:10", oyamaArr: "20:42", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
-      { kuzuDep: "20:18", sanoArr: "20:26", sanoDep: "20:38", oyamaArr: "21:10", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" }
+      { kuzuDep: "05:45", sanoArr: "05:53", sanoDep: "06:01", oyamaArr: "06:33", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "06:13", sanoArr: "06:21", sanoDep: "06:37", oyamaArr: "07:11", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "06:36", sanoArr: "06:44", sanoDep: "07:07", oyamaArr: "07:38", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "07:08", sanoArr: "07:16", sanoDep: "07:39", oyamaArr: "08:14", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "07:36", sanoArr: "07:44", sanoDep: "08:13", oyamaArr: "08:48", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "08:13", sanoArr: "08:21", sanoDep: "08:52", oyamaArr: "09:25", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "16:09", sanoArr: "16:17", sanoDep: "16:32", oyamaArr: "17:04", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "17:11", sanoArr: "17:19", sanoDep: "17:31", oyamaArr: "18:04", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "18:06", sanoArr: "18:14", sanoDep: "18:22", oyamaArr: "18:55", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "18:39", sanoArr: "18:47", sanoDep: "18:58", oyamaArr: "19:30", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "19:12", sanoArr: "19:20", sanoDep: "19:28", oyamaArr: "20:00", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "19:39", sanoArr: "19:47", sanoDep: "20:10", oyamaArr: "20:42", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "20:10", sanoArr: "20:18", sanoDep: "20:38", oyamaArr: "21:10", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line" }
     ];
 
     // ③ 佐野駅乗り換え JR両毛線（高崎方面：上り/1番線）接続データ
     const sanoTakasakiRoutes = [
-      { kuzuDep: "06:18", sanoArr: "06:26", sanoDep: "06:33", takasakiArr: "08:01", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "07:22", sanoArr: "07:30", sanoDep: "07:36", takasakiArr: "09:07", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "08:34", sanoArr: "08:42", sanoDep: "08:48", takasakiArr: "10:14", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "16:15", sanoArr: "16:23", sanoDep: "16:34", takasakiArr: "18:03", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "17:10", sanoArr: "17:18", sanoDep: "17:28", takasakiArr: "18:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "18:05", sanoArr: "18:13", sanoDep: "18:24", takasakiArr: "19:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "18:38", sanoArr: "18:46", sanoDep: "18:55", takasakiArr: "20:25", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "19:12", sanoArr: "19:20", sanoDep: "19:27", takasakiArr: "20:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
-      { kuzuDep: "20:18", sanoArr: "20:26", sanoDep: "20:35", takasakiArr: "22:00", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" }
+      { kuzuDep: "06:13", sanoArr: "06:21", sanoDep: "06:33", takasakiArr: "08:01", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "07:08", sanoArr: "07:16", sanoDep: "07:36", takasakiArr: "09:07", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "08:13", sanoArr: "08:21", sanoDep: "08:48", takasakiArr: "10:14", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "16:09", sanoArr: "16:17", sanoDep: "16:34", takasakiArr: "18:03", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "17:11", sanoArr: "17:19", sanoDep: "17:28", takasakiArr: "18:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "18:06", sanoArr: "18:14", sanoDep: "18:24", takasakiArr: "19:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "18:39", sanoArr: "18:47", sanoDep: "18:55", takasakiArr: "20:25", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "19:12", sanoArr: "19:20", sanoDep: "19:27", takasakiArr: "20:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" },
+      { kuzuDep: "20:10", sanoArr: "20:18", sanoDep: "20:35", takasakiArr: "22:00", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line" }
     ];
 
-    // 4秒ごとにモードをローテーション（北千住(日) ➔ 北千住(英) ➔ 佐野・小山(日) ➔ 佐野・高崎(日)）
+    // 4秒ごとにモードをローテーション
     setInterval(() => {
       displayMode = (displayMode + 1) % 4;
       updateHeaderTexts();
@@ -500,7 +559,6 @@
 
       const isEnglishMode = (displayMode === 1);
 
-      // ★ 全ての列車が終了した場合（終電後モード） ★
       if (upcomingMy.length === 0) {
         document.getElementById("notice-text").textContent = isEnglishMode 
           ? "【Notice】 End of today's train service."
@@ -523,15 +581,15 @@
       const countdownEl = document.getElementById("info-countdown");
 
       if (displayMode === 0 || displayMode === 1) {
-        // --- モード0・1：北千住方面（館林乗換 上りホーム） ---
+        // --- 北千住方面 ---
         const isEn = (displayMode === 1);
         document.getElementById("card-badge").textContent = "TOKYO ROUTE";
-        document.getElementById("info-card-title").textContent = isEn ? "Connection for Kita-senju" : "北千住方面 接続案内（館林乗り換え）";
+        document.getElementById("info-card-title").textContent = isEn ? "Connection for Kita-senju" : "北千住方面 接続案内";
         
         document.getElementById("st-origin").textContent = isEn ? "Kuzuu" : "葛生";
         document.getElementById("lbl-origin-line").textContent = isEn ? "Tobu Sano Line" : "東武佐野線";
         document.getElementById("st-transfer").textContent = isEn ? "Tatebayashi Sta." : "館林駅 乗り換え";
-        document.getElementById("pf-transfer").textContent = isEn ? "Inbound" : "上りホーム";
+        document.getElementById("pf-transfer").textContent = isEn ? "Inbound" : "上り";
         document.getElementById("st-dest").textContent = isEn ? "Kita-senju Arr." : "北千住駅 到着";
         document.getElementById("lbl-dest-arr").textContent = isEn ? "Est. Arrival" : "到着予定";
 
@@ -542,7 +600,7 @@
 
         if (nextRoute) {
           document.getElementById("origin-dep-time").textContent = nextRoute.kuzuDep;
-          document.getElementById("transfer-time").textContent = nextRoute.tateArr === "---" ? (isEn ? "Direct" : "直通") : `${nextRoute.tateArr}着 / ${nextRoute.tateDep}発`;
+          document.getElementById("transfer-time").textContent = nextRoute.tateArr === "---" ? (isEn ? "Direct" : "直通") : `${nextRoute.tateArr} / ${nextRoute.tateDep}`;
           document.getElementById("lbl-transfer-info").textContent = isEn ? nextRoute.noteEn : nextRoute.noteJa;
           document.getElementById("dest-arr-time").textContent = nextRoute.senjuArr;
 
@@ -554,7 +612,7 @@
         }
 
       } else if (displayMode === 2) {
-        // --- モード2：佐野駅乗り換え（JR両毛線・小山方面：下りホーム/2番線） ---
+        // --- 佐野駅乗り換え（JR両毛線・小山方面：下り/2番線） ---
         document.getElementById("card-badge").textContent = "OYAMA ROUTE";
         document.getElementById("info-card-title").textContent = "佐野駅乗り換え ➔ JR両毛線（小山方面）接続";
         
@@ -572,7 +630,7 @@
 
         if (nextRoute) {
           document.getElementById("origin-dep-time").textContent = nextRoute.kuzuDep;
-          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr}着 / ${nextRoute.sanoDep}発`;
+          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr} / ${nextRoute.sanoDep}`;
           document.getElementById("lbl-transfer-info").textContent = nextRoute.lineJa;
           document.getElementById("dest-arr-time").textContent = nextRoute.oyamaArr;
 
@@ -584,7 +642,7 @@
         }
 
       } else if (displayMode === 3) {
-        // --- モード3：佐野駅乗り換え（JR両毛線・高崎方面：上りホーム/1番線） ---
+        // --- 佐野駅乗り換え（JR両毛線・高崎方面：上り/1番線） ---
         document.getElementById("card-badge").textContent = "TAKASAKI ROUTE";
         document.getElementById("info-card-title").textContent = "佐野駅乗り換え ➔ JR両毛線（高崎方面）接続";
         
@@ -602,7 +660,7 @@
 
         if (nextRoute) {
           document.getElementById("origin-dep-time").textContent = nextRoute.kuzuDep;
-          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr}着 / ${nextRoute.sanoDep}発`;
+          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr} / ${nextRoute.sanoDep}`;
           document.getElementById("lbl-transfer-info").textContent = nextRoute.lineJa;
           document.getElementById("dest-arr-time").textContent = nextRoute.takasakiArr;
 
@@ -635,7 +693,6 @@
       }
     }
 
-    // ★ 運行終了時の駅風表示 ★
     function setRowDataFinished(prefix, isEn) {
       document.getElementById(`${prefix}-time`).textContent = "--:--";
       document.getElementById(`${prefix}-dest`).textContent = isEn ? "End of today's service" : "本日の運転は終了いたしました";
