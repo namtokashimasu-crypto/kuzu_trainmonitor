@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>葛生駅 リアルタイム発車案内ディスプレイ</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Noto+Sans+JP:wght@700;900&display=swap');
+
+    :root {
+      --bg-board: #000000;
+      --border-outer: #222222;
+      --text-white: #ffffff;
+      --text-yellow: #ffcc00;
+      --text-orange: #ff9900;
+      --text-gray: #aaaaaa;
+      --badge-ltd: #d90429;     /* 特急レッド */
+      --badge-local: #ffffff;   /* 普通ホワイト */
+      --delay-red: #ff3333;
+      --ok-green: #00ff66;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: #0d0d0d;
+      color: var(--text-white);
+      font-family: 'Noto Sans JP', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .board-container {
+      background-color: var(--bg-board);
+      width: 100%;
+      max-width: 1200px;
+      border: 12px solid var(--border-outer);
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.9), inset 0 0 15px rgba(255,255,255,0.05);
+      padding: 20px 28px;
+      transition: border-color 0.5s ease;
+    }
+
+    .board-container.is-delayed {
+      border-color: var(--delay-red);
+      animation: pulse-border 2s infinite;
+    }
+
+    @keyframes pulse-border {
+      0% { border-color: #ff3333; }
+      50% { border-color: #660000; }
+      100% { border-color: #ff3333; }
+    }
+
+    .top-banner {
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #333;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .platform-num {
+      background: linear-gradient(135deg, #111, #333);
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 900;
+      padding: 2px 16px;
+      border: 2px solid #fff;
+      border-right: 8px solid #f60;
+      margin-right: 18px;
+      font-family: 'Chakra Petch', sans-serif;
+      flex-shrink: 0;
+    }
+
+    .banner-text {
+      font-size: 1.3rem;
+      color: #ddd;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .board-header {
+      display: grid;
+      grid-template-columns: 22% 20% 43% 15%;
+      color: var(--text-gray);
+      font-size: 1rem;
+      border-bottom: 1px solid #444;
+      padding-bottom: 6px;
+      text-align: center;
+    }
+
+    .board-row {
+      display: grid;
+      grid-template-columns: 22% 20% 43% 15%;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #222;
+      text-align: center;
+      min-height: 80px;
+    }
+
+    .dept-time {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 3.6rem;
+      font-weight: 700;
+      color: var(--text-white);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .train-badge {
+      display: inline-block;
+      width: 85%;
+      max-width: 160px;
+      padding: 8px 0;
+      font-size: 1.3rem;
+      font-weight: 900;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .badge-ltd { background-color: var(--badge-ltd); color: #fff; }
+    .badge-local { background-color: var(--badge-local); color: #000; }
+
+    .destination {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: var(--text-white);
+      text-align: left;
+      padding-left: 20px;
+      white-space: nowrap;
+    }
+
+    .cars-info {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .cars-unit { font-size: 1.1rem; font-weight: normal; margin-left: 4px; }
+
+    .notice-bar {
+      background-color: #111;
+      color: var(--ok-green);
+      border: 1px solid #333;
+      padding: 12px 18px;
+      margin: 18px 0;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .notice-bar.has-delay {
+      background-color: #4a0000;
+      color: #ffffff;
+      border-color: var(--delay-red);
+      font-size: 1.35rem;
+    }
+
+    /* 北千住案内セクション */
+    .senju-section {
+      background: #080d1a;
+      border: 2px solid #1a2a47;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .senju-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      min-height: 32px;
+    }
+
+    .senju-title-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .route-badge {
+      background: linear-gradient(135deg, #1da1f2, #0066cc);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      font-family: 'Chakra Petch', sans-serif;
+    }
+
+    .senju-title-text {
+      color: #38bdf8;
+      font-size: 1.15rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .senju-countdown-box {
+      background: #000;
+      border: 1px solid #2a3a57;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    .senju-connection-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #000;
+      border: 1px solid #223355;
+      padding: 14px 20px;
+      border-radius: 6px;
+      min-height: 100px;
+    }
+
+    .step-box { text-align: center; flex: 1; }
+    .step-station { font-size: 0.95rem; color: var(--text-gray); font-weight: bold; margin-bottom: 4px; }
+    .step-time {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--text-yellow);
+      white-space: nowrap;
+    }
+    .step-label { font-size: 0.9rem; color: #fff; margin-top: 4px; }
+    
+    .platform-badge {
+      display: inline-block;
+      background: #222;
+      color: #ffcc00;
+      border: 1px solid #ffcc00;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    
+    .arrow { color: #38bdf8; font-size: 1.8rem; font-weight: bold; padding: 0 10px; }
+  </style>
+</head>
+<body>
+
+  <div class="board-container" id="main-board">
+    
+    <!-- 1. 葛生駅 ホーム案内 -->
+    <div class="top-banner">
+      <div class="platform-num" id="platform-num">1・2</div>
+      <div class="banner-text" id="top-banner-text">
+        佐野・館林・浅草 方面
+      </div>
+    </div>
+
+    <!-- 2. 発車標テーブルヘッダー -->
+    <div class="board-header">
+      <div id="hdr-dept">発車時刻</div>
+      <div id="hdr-train">種別</div>
+      <div style="text-align: left; padding-left: 20px;" id="hdr-to">行先</div>
+      <div id="hdr-cars">両数</div>
+    </div>
+
+    <!-- 先発 (1本目) -->
+    <div class="board-row">
+      <div class="dept-time" id="m1-time">--:--</div>
+      <div><span class="train-badge badge-local" id="m1-badge">普通</span></div>
+      <div class="destination" id="m1-dest">--</div>
+      <div class="cars-info" id="m1-cars">--<span class="cars-unit" id="m1-unit">両</span></div>
+    </div>
+
+    <!-- 運行状況テロップ -->
+    <div class="notice-bar" id="notice-text">
+      【運行状況】東武佐野線・伊勢崎線：平常運転
+    </div>
+
+    <!-- 次発 (2本目) -->
+    <div class="board-row" style="padding: 8px 0;">
+      <div class="dept-time" id="m2-time" style="font-size: 2.8rem;">--:--</div>
+      <div><span class="train-badge badge-local" id="m2-badge" style="font-size: 1.2rem;">普通</span></div>
+      <div class="destination" id="m2-dest" style="font-size: 1.8rem;">--</div>
+      <div class="cars-info" id="m2-cars" style="font-size: 2.1rem;">--<span class="cars-unit" id="m2-unit">両</span></div>
+    </div>
+
+    <!-- 次々発 (3本目) -->
+    <div class="board-row" style="padding: 8px 0; border: none;">
+      <div class="dept-time" id="m3-time" style="font-size: 2.8rem;">--:--</div>
+      <div><span class="train-badge badge-local" id="m3-badge" style="font-size: 1.2rem;">普通</span></div>
+      <div class="destination" id="m3-dest" style="font-size: 1.8rem;">--</div>
+      <div class="cars-info" id="m3-cars" style="font-size: 2.1rem;">--<span class="cars-unit" id="m3-unit">両</span></div>
+    </div>
+
+    <!-- 3. 北千住接続案内カード -->
+    <div class="senju-section">
+      <div class="senju-header">
+        <div class="senju-title-box">
+          <span class="route-badge">TOKYO ROUTE</span>
+          <span class="senju-title-text" id="senju-card-title">北千住方面 接続案内（館林乗り換え / 直通）</span>
+        </div>
+        <div class="senju-countdown-box">
+          <span id="senju-countdown" style="color: var(--ok-green); font-family: monospace; font-size: 1.2rem; font-weight: bold;">あと --:--</span>
+        </div>
+      </div>
+
+      <div class="senju-connection-flow">
+        <!-- 葛生駅発 -->
+        <div class="step-box">
+          <div class="step-station"><span id="st-kuzu">葛生</span> <span class="platform-badge" id="pf-kuzu">発</span></div>
+          <div class="step-time" id="kuzu-dep-time">--:--</div>
+          <div class="step-label" id="lbl-sano-line">東武佐野線</div>
+        </div>
+
+        <div class="arrow">➔</div>
+
+        <!-- 館林駅乗り換え/通過 -->
+        <div class="step-box" style="flex: 1.4;">
+          <div class="step-station"><span id="st-tatebayashi">館林駅 乗り換え</span> <span class="platform-badge">上りホーム</span></div>
+          <div class="step-time" id="tatebayashi-time" style="color: #ff9900; font-size: 1.8rem;">--:-- Arr / --:-- Dep</div>
+          <div class="step-label" id="lbl-transfer-info">東武スカイツリーライン直通</div>
+        </div>
+
+        <div class="arrow">➔</div>
+
+        <!-- 北千住駅到着 -->
+        <div class="step-box">
+          <div class="step-station" id="st-senju">北千住駅 到着</div>
+          <div class="step-time" id="senju-arr-time" style="color: var(--ok-green);">--:--</div>
+          <div class="step-label" id="lbl-senju-arr">到着予定</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const ODPT_API_KEY = "c7im4fjqeajwpurz9a295jbpdctk5q3mw9orll1m0hgbm9t016vrfvtpftebkhln";
+
+    let isEnglish = false;
+    let globalDelayMinutes = 0;
+
+    // 葛生発 ➔ 館林乗り換え ➔ 北千住到着 ルート参照テーブル（終日対応）
+    const senjuRoutes = [
+      // 朝帯
+      { kuzuDep: "05:43", tateArr: "06:17", tateDep: "06:21 (区間急行)", senjuArr: "07:28", noteJa: "館林乗換（スカイツリーライン直通）", noteEn: "Transfer at Tatebayashi" },
+      { kuzuDep: "06:18", tateArr: "06:51", tateDep: "06:55 (急行)", senjuArr: "07:53", noteJa: "館林乗換（半蔵門線直通急行）", noteEn: "Transfer at Tatebayashi" },
+      { kuzuDep: "06:48", tateArr: "07:22", tateDep: "07:27 (特急りょうもう)", senjuArr: "08:24", noteJa: "館林で特急乗り換え", noteEn: "Ltd. Exp. Transfer at Tatebayashi" },
+      { kuzuDep: "07:11", tateArr: "07:46", tateDep: "07:50 (特急リバティ)", senjuArr: "08:44", noteJa: "特急リバティりょうもう（葛生直通）", noteEn: "Direct Ltd. Exp. Revaty" },
+      { kuzuDep: "07:54", tateArr: "08:28", tateDep: "08:33 (区間急行)", senjuArr: "09:35", noteJa: "館林乗換", noteEn: "Transfer at Tatebayashi" },
+      // 昼〜夕方帯
+      { kuzuDep: "16:15", tateArr: "16:48", tateDep: "16:53 (区間急行)", senjuArr: "17:58", noteJa: "館林乗換", noteEn: "Transfer at Tatebayashi" },
+      { kuzuDep: "17:10", tateArr: "17:43", tateDep: "17:50 (特急りょうもう)", senjuArr: "18:42", noteJa: "館林で特急乗り換え", noteEn: "Ltd. Exp. Transfer at Tatebayashi" },
+      { kuzuDep: "18:05", tateArr: "18:38", tateDep: "18:45 (区間急行)", senjuArr: "19:50", noteJa: "館林乗換", noteEn: "Transfer at Tatebayashi" },
+      { kuzuDep: "19:12", tateArr: "19:45", tateDep: "19:52 (区間急行)", senjuArr: "20:56", noteJa: "館林乗換", noteEn: "Transfer at Tatebayashi" },
+      { kuzuDep: "20:18", tateArr: "20:51", tateDep: "20:58 (普通/南栗橋乗換)", senjuArr: "22:05", noteJa: "館林乗換", noteEn: "Transfer at Tatebayashi" }
+    ];
+
+    // 葛生駅 発車主要ダイヤ（上り館林方面）
+    const kuzuRoutes = [
+      { time: "05:43", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "06:18", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "06:48", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "07:11", typeJa: "特急", typeEn: "Limited Exp.", badge: "badge-ltd", destJa: "浅草 (リバティ)", destEn: "Asakusa (Revaty)", cars: "3" },
+      { time: "07:54", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "16:15", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "17:10", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "18:05", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "19:12", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" },
+      { time: "20:18", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "3" }
+    ];
+
+    setInterval(() => {
+      isEnglish = !isEnglish;
+      updateLanguageUI();
+      updateMonitor();
+    }, 3000);
+
+    function updateLanguageUI() {
+      document.getElementById("hdr-dept").textContent = isEnglish ? "Departure time" : "発車時刻";
+      document.getElementById("hdr-train").textContent = isEnglish ? "Train" : "種別";
+      document.getElementById("hdr-to").textContent = isEnglish ? "To" : "行先";
+      document.getElementById("hdr-cars").textContent = isEnglish ? "Cars" : "両数";
+      
+      document.getElementById("m1-unit").textContent = isEnglish ? "Cars" : "両";
+      document.getElementById("m2-unit").textContent = isEnglish ? "Cars" : "両";
+      document.getElementById("m3-unit").textContent = isEnglish ? "Cars" : "両";
+
+      document.getElementById("top-banner-text").textContent = isEnglish 
+        ? "for Sano, Tatebayashi, Asakusa"
+        : "佐野・館林・浅草 方面";
+
+      document.getElementById("senju-card-title").textContent = isEnglish
+        ? "Connection for Kita-senju (via Tatebayashi)"
+        : "北千住方面 接続案内（館林乗り換え / 直通）";
+
+      document.getElementById("st-kuzu").textContent = isEnglish ? "Kuzuu Dep." : "葛生";
+      document.getElementById("lbl-sano-line").textContent = isEnglish ? "Tobu Sano Line" : "東武佐野線";
+
+      document.getElementById("st-tatebayashi").textContent = isEnglish ? "Tatebayashi Sta." : "館林駅 乗り換え";
+
+      document.getElementById("st-senju").textContent = isEnglish ? "Kita-senju Sta. Arrival" : "北千住駅 到着";
+      document.getElementById("lbl-senju-arr").textContent = isEnglish ? "Est. Arrival" : "到着予定";
+    }
+
+    async function checkRealtimeDelay() {
+      try {
+        const url = `https://api.odpt.org/api/v4/odpt:TrainInformation?odpt:operator=odpt.Operator:Tobu&acl:consumerKey=${ODPT_API_KEY}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        let delayMessage = "";
+        let isDelayed = false;
+
+        if (data && data.length > 0) {
+          for (let item of data) {
+            const text = item["odpt:trainInformationText"] ? item["odpt:trainInformationText"].ja : "";
+            if (text && !text.includes("平常")) {
+              isDelayed = true;
+              delayMessage = text;
+              break;
+            }
+          }
+        }
+
+        const noticeEl = document.getElementById("notice-text");
+        const boardEl = document.getElementById("main-board");
+
+        if (isDelayed) {
+          noticeEl.textContent = `【⚠️ 遅延発生】${delayMessage}`;
+          noticeEl.className = "notice-bar has-delay";
+          boardEl.className = "board-container is-delayed";
+          globalDelayMinutes = 5;
+        } else {
+          noticeEl.textContent = isEnglish 
+            ? "【Status】 Tobu Sano Line / Isesaki Line: Normal Operation"
+            : "【運行状況】東武佐野線・伊勢崎線：平常運転";
+          noticeEl.className = "notice-bar";
+          boardEl.className = "board-container";
+          globalDelayMinutes = 0;
+        }
+
+      } catch (e) {
+        console.warn("API Error:", e);
+      }
+    }
+
+    function updateMonitor() {
+      const now = new Date();
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+      const currentSec = now.getSeconds();
+
+      const upcomingMy = kuzuRoutes.filter(r => {
+        const [h, m] = r.time.split(":").map(Number);
+        const trainMin = h * 60 + m + globalDelayMinutes;
+        return trainMin > currentMin || (trainMin === currentMin && currentSec === 0);
+      });
+
+      setRowData("m1", upcomingMy[0]);
+      setRowData("m2", upcomingMy[1]);
+      setRowData("m3", upcomingMy[2]);
+
+      const nextRoute = senjuRoutes.find(r => {
+        const [h, m] = r.kuzuDep.split(":").map(Number);
+        const trainMin = h * 60 + m + globalDelayMinutes;
+        return trainMin > currentMin || (trainMin === currentMin && currentSec === 0);
+      });
+
+      if (nextRoute) {
+        document.getElementById("kuzu-dep-time").textContent = nextRoute.kuzuDep;
+        
+        document.getElementById("tatebayashi-time").textContent = isEnglish 
+          ? `${nextRoute.tateArr} Arr / ${nextRoute.tateDep.split(' ')[0]} Dep`
+          : `${nextRoute.tateArr}着 / ${nextRoute.tateDep}`;
+
+        document.getElementById("lbl-transfer-info").textContent = isEnglish ? nextRoute.noteEn : nextRoute.noteJa;
+
+        document.getElementById("senju-arr-time").textContent = nextRoute.senjuArr;
+
+        const [h, m] = nextRoute.kuzuDep.split(":").map(Number);
+        const targetSec = ((h * 60 + m + globalDelayMinutes) * 60);
+        const currentTotalSec = currentMin * 60 + currentSec;
+        const diffSec = targetSec - currentTotalSec;
+
+        const min = Math.floor(diffSec / 60);
+        const sec = diffSec % 60;
+        const countdownEl = document.getElementById("senju-countdown");
+
+        const prefixText = isEnglish ? "In " : "あと ";
+        countdownEl.textContent = `${prefixText}${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+      } else {
+        document.getElementById("kuzu-dep-time").textContent = "--:--";
+        document.getElementById("tatebayashi-time").textContent = "--:-- Arr / --:-- Dep";
+        document.getElementById("senju-arr-time").textContent = "--:--";
+        document.getElementById("senju-countdown").textContent = isEnglish ? "End of Service" : "本日の運行終了";
+      }
+    }
+
+    function setRowData(prefix, data) {
+      if (data) {
+        document.getElementById(`${prefix}-time`).textContent = data.time;
+        document.getElementById(`${prefix}-dest`).textContent = isEnglish ? data.destEn : data.destJa;
+        document.getElementById(`${prefix}-cars`).innerHTML = `${data.cars}<span class="cars-unit">${isEnglish ? 'Cars' : '両'}</span>`;
+        document.getElementById(`${prefix}-badge`).textContent = isEnglish ? data.typeEn : data.typeJa;
+        document.getElementById(`${prefix}-badge`).className = `train-badge ${data.badge}`;
+      } else {
+        document.getElementById(`${prefix}-time`).textContent = "--:--";
+        document.getElementById(`${prefix}-dest`).textContent = isEnglish ? "Terminated" : "終了";
+        document.getElementById(`${prefix}-cars`).innerHTML = `--<span class="cars-unit">${isEnglish ? 'Cars' : '両'}</span>`;
+      }
+    }
+
+    checkRealtimeDelay();
+    setInterval(checkRealtimeDelay, 60000);
+    setInterval(updateMonitor, 1000);
+    updateMonitor();
+  </script>
+</body>
+</html>
