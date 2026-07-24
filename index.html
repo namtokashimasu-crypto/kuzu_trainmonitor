@@ -187,8 +187,8 @@
       font-size: 1.35rem;
     }
 
-    /* 北千住接続カード */
-    .senju-section {
+    /* 下段マルチ接続カード（固定高さ設計） */
+    .info-section {
       background: #080d1a;
       border: 2px solid #1a2a47;
       border-radius: 8px;
@@ -196,7 +196,7 @@
       height: 175px;
     }
 
-    .senju-header {
+    .info-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -204,7 +204,7 @@
       margin-bottom: 10px;
     }
 
-    .senju-title-box {
+    .info-title-box {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -220,13 +220,13 @@
       font-family: 'Chakra Petch', sans-serif;
     }
 
-    .senju-title-text {
+    .info-title-text {
       color: #38bdf8;
       font-size: 1.1rem;
       font-weight: bold;
     }
 
-    .senju-countdown-box {
+    .info-countdown-box {
       background: #000;
       border: 1px solid #2a3a57;
       padding: 4px 12px;
@@ -237,7 +237,7 @@
       font-weight: bold;
     }
 
-    .senju-connection-flow {
+    .info-connection-flow {
       display: grid;
       grid-template-columns: 1fr 30px 1.5fr 30px 1fr;
       align-items: center;
@@ -305,7 +305,7 @@
 
     <!-- 運行状況テロップ -->
     <div class="notice-bar" id="notice-text">
-      【運行状況】東武佐野線・伊勢崎線：平常運転
+      【運行状況】東武佐野線・両毛線：平常運転
     </div>
 
     <!-- 次発 (2本目) -->
@@ -324,42 +324,42 @@
       <div class="cars-info" id="m3-cars">--<span class="cars-unit" id="m3-unit">両</span></div>
     </div>
 
-    <!-- 3. 北千住接続案内カード -->
-    <div class="senju-section">
-      <div class="senju-header">
-        <div class="senju-title-box">
-          <span class="route-badge">TOKYO ROUTE</span>
-          <span class="senju-title-text" id="senju-card-title">北千住方面 接続案内（館林乗り換え / 直通）</span>
+    <!-- 3. マルチ接続案内カード（北千住方面 ⇄ 佐野駅 JR両毛線乗り換えが自動ローテーション） -->
+    <div class="info-section">
+      <div class="info-header">
+        <div class="info-title-box">
+          <span class="route-badge" id="card-badge">TOKYO ROUTE</span>
+          <span class="info-title-text" id="info-card-title">北千住方面 接続案内（館林乗り換え / 直通）</span>
         </div>
-        <div class="senju-countdown-box" id="senju-countdown">
+        <div class="info-countdown-box" id="info-countdown">
           あと --:--
         </div>
       </div>
 
-      <div class="senju-connection-flow">
-        <!-- 葛生駅発 -->
+      <div class="info-connection-flow">
+        <!-- 出発駅 -->
         <div class="step-box">
-          <div class="step-station"><span id="st-kuzu">葛生</span> <span class="platform-badge">1番線</span></div>
-          <div class="step-time" id="kuzu-dep-time">--:--</div>
-          <div class="step-label" id="lbl-sano-line">東武佐野線</div>
+          <div class="step-station"><span id="st-origin">葛生</span> <span class="platform-badge">1番線</span></div>
+          <div class="step-time" id="origin-dep-time">--:--</div>
+          <div class="step-label" id="lbl-origin-line">東武佐野線</div>
         </div>
 
         <div class="arrow">➔</div>
 
-        <!-- 館林駅乗り換え -->
+        <!-- 乗換駅・接続点 -->
         <div class="step-box">
-          <div class="step-station"><span id="st-tatebayashi">館林駅 乗り換え</span> <span class="platform-badge">上りホーム</span></div>
-          <div class="step-time" id="tatebayashi-time" style="color: #ff9900;">--:--着 / --:--発</div>
+          <div class="step-station"><span id="st-transfer">館林駅 乗り換え</span> <span class="platform-badge" id="pf-transfer">上りホーム</span></div>
+          <div class="step-time" id="transfer-time" style="color: #ff9900;">--:--着 / --:--発</div>
           <div class="step-label" id="lbl-transfer-info">普通（久喜行）</div>
         </div>
 
         <div class="arrow">➔</div>
 
-        <!-- 北千住駅到着 -->
+        <!-- 到着駅 -->
         <div class="step-box">
-          <div class="step-station" id="st-senju">北千住駅 到着</div>
-          <div class="step-time" id="senju-arr-time" style="color: var(--ok-green);">--:--</div>
-          <div class="step-label" id="lbl-senju-arr">到着予定</div>
+          <div class="step-station" id="st-dest">北千住駅 到着</div>
+          <div class="step-time" id="dest-arr-time" style="color: var(--ok-green);">--:--</div>
+          <div class="step-label" id="lbl-dest-arr">到着予定</div>
         </div>
       </div>
     </div>
@@ -369,9 +369,9 @@
   <script>
     const ODPT_API_KEY = "c7im4fjqeajwpurz9a295jbpdctk5q3mw9orll1m0hgbm9t016vrfvtpftebkhln";
 
-    let isEnglish = false;
+    let displayMode = 0; // 0: 北千住(日), 1: 北千住(英), 2: 佐野発・両毛線小山方面(日), 3: 佐野発・両毛線高崎方面(日)
 
-    // ★ 東武佐野線（葛生発）平日公式ダイヤ全27本 ★
+    // 葛生発 公式全27本
     const kuzuFullRoutes = [
       { time: "05:14", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
       { time: "05:43", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" },
@@ -402,7 +402,7 @@
       { time: "23:12", typeJa: "普通", typeEn: "Local", badge: "badge-local", destJa: "館林", destEn: "Tatebayashi", cars: "2" }
     ];
 
-    // ★ 北千住接続ガイドテーブル（時刻と列車案内を完全分離） ★
+    // ① 北千住方面 接続データ
     const senjuFullRoutes = [
       { kuzuDep: "05:14", tateArr: "05:48", tateDep: "05:52", senjuArr: "06:58", noteJa: "館林・久喜乗換（普通）", noteEn: "Local (Transfer at Kuki)" },
       { kuzuDep: "05:43", tateArr: "06:17", tateDep: "06:21", senjuArr: "07:28", noteJa: "区間急行（浅草行）", noteEn: "Section Express for Asakusa" },
@@ -433,14 +433,39 @@
       { kuzuDep: "23:12", tateArr: "23:45", tateDep: "---",   senjuArr: "---",   noteJa: "館林止まり（接続なし）", noteEn: "Final train for Tatebayashi" }
     ];
 
-    // 3秒ごとの切替タイマー
-    setInterval(() => {
-      isEnglish = !isEnglish;
-      updateLanguageUI();
-      updateMonitor();
-    }, 3000);
+    // ② 佐野駅乗り換え JR両毛線（小山方面）接続データ
+    const sanoOyamaRoutes = [
+      { kuzuDep: "05:43", sanoArr: "05:51", sanoDep: "06:01", oyamaArr: "06:33", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "06:18", sanoArr: "06:26", sanoDep: "06:37", oyamaArr: "07:11", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "06:48", sanoArr: "06:56", sanoDep: "07:07", oyamaArr: "07:38", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "07:22", sanoArr: "07:30", sanoDep: "07:39", oyamaArr: "08:14", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "07:54", sanoArr: "08:02", sanoDep: "08:13", oyamaArr: "08:48", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "08:34", sanoArr: "08:42", sanoDep: "08:52", oyamaArr: "09:25", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "16:15", sanoArr: "16:23", sanoDep: "16:32", oyamaArr: "17:04", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "17:10", sanoArr: "17:18", sanoDep: "17:31", oyamaArr: "18:04", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "18:05", sanoArr: "18:13", sanoDep: "18:22", oyamaArr: "18:55", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" },
+      { kuzuDep: "19:12", sanoArr: "19:20", sanoDep: "19:28", oyamaArr: "20:00", lineJa: "JR両毛線 (小山行)", lineEn: "JR Ryomo Line for Oyama" }
+    ];
 
-    function updateLanguageUI() {
+    // ③ 佐野駅乗り換え JR両毛線（高崎方面）接続データ
+    const sanoTakasakiRoutes = [
+      { kuzuDep: "06:18", sanoArr: "06:26", sanoDep: "06:33", takasakiArr: "08:01", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
+      { kuzuDep: "07:22", sanoArr: "07:30", sanoDep: "07:36", takasakiArr: "09:07", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
+      { kuzuDep: "08:34", sanoArr: "08:42", sanoDep: "08:48", takasakiArr: "10:14", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
+      { kuzuDep: "16:15", sanoArr: "16:23", sanoDep: "16:34", takasakiArr: "18:03", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
+      { kuzuDep: "18:05", sanoArr: "18:13", sanoDep: "18:24", takasakiArr: "19:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" },
+      { kuzuDep: "19:12", sanoArr: "19:20", sanoDep: "19:27", takasakiArr: "20:54", lineJa: "JR両毛線 (高崎行)", lineEn: "JR Ryomo Line for Takasaki" }
+    ];
+
+    // 4秒ごとにモードをローテーション（北千住(日) ➔ 北千住(英) ➔ 佐野・小山(日) ➔ 佐野・高崎(日)）
+    setInterval(() => {
+      displayMode = (displayMode + 1) % 4;
+      updateHeaderTexts();
+      updateMonitor();
+    }, 4000);
+
+    function updateHeaderTexts() {
+      const isEnglish = (displayMode === 1);
       document.getElementById("hdr-dept").textContent = isEnglish ? "Departure time" : "発車時刻";
       document.getElementById("hdr-train").textContent = isEnglish ? "Train" : "種別";
       document.getElementById("hdr-to").textContent = isEnglish ? "To" : "行先";
@@ -453,18 +478,6 @@
       document.getElementById("top-banner-text").textContent = isEnglish 
         ? "for Sano, Tatebayashi, Asakusa"
         : "佐野・館林・浅草 方面";
-
-      document.getElementById("senju-card-title").textContent = isEnglish
-        ? "Connection for Kita-senju (via Tatebayashi)"
-        : "北千住方面 接続案内（館林乗り換え / 直通）";
-
-      document.getElementById("st-kuzu").textContent = isEnglish ? "Kuzuu Sta." : "葛生";
-      document.getElementById("lbl-sano-line").textContent = isEnglish ? "Tobu Sano Line" : "東武佐野線";
-
-      document.getElementById("st-tatebayashi").textContent = isEnglish ? "Tatebayashi Sta." : "館林駅 乗り換え";
-
-      document.getElementById("st-senju").textContent = isEnglish ? "Kita-senju Sta." : "北千住駅 到着";
-      document.getElementById("lbl-senju-arr").textContent = isEnglish ? "Est. Arrival" : "到着予定";
     }
 
     function updateMonitor() {
@@ -472,67 +485,128 @@
       const currentMin = now.getHours() * 60 + now.getMinutes();
       const currentSec = now.getSeconds();
 
+      // 1. 上部 発車標の更新
       const upcomingMy = kuzuFullRoutes.filter(r => {
         const [h, m] = r.time.split(":").map(Number);
         return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
       });
 
-      setRowData("m1", upcomingMy[0]);
-      setRowData("m2", upcomingMy[1]);
-      setRowData("m3", upcomingMy[2]);
+      const isEnglishMode = (displayMode === 1);
+      setRowData("m1", upcomingMy[0], isEnglishMode);
+      setRowData("m2", upcomingMy[1], isEnglishMode);
+      setRowData("m3", upcomingMy[2], isEnglishMode);
 
-      const nextRoute = senjuFullRoutes.find(r => {
-        const [h, m] = r.kuzuDep.split(":").map(Number);
-        return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
-      });
+      // 2. 下段 マルチ接続カードの更新
+      const countdownEl = document.getElementById("info-countdown");
 
-      if (nextRoute) {
-        document.getElementById("kuzu-dep-time").textContent = nextRoute.kuzuDep;
+      if (displayMode === 0 || displayMode === 1) {
+        // --- モード0・1：北千住方面 ---
+        const isEn = (displayMode === 1);
+        document.getElementById("card-badge").textContent = "TOKYO ROUTE";
+        document.getElementById("info-card-title").textContent = isEn ? "Connection for Kita-senju" : "北千住方面 接続案内（館林乗り換え）";
         
-        // 時刻表示をシンプルに固定（20:51着 / 20:57発）
-        if (nextRoute.tateArr === "---") {
-          document.getElementById("tatebayashi-time").textContent = isEnglish ? "Direct" : "直通";
+        document.getElementById("st-origin").textContent = isEn ? "Kuzuu" : "葛生";
+        document.getElementById("lbl-origin-line").textContent = isEn ? "Tobu Sano Line" : "東武佐野線";
+        document.getElementById("st-transfer").textContent = isEn ? "Tatebayashi Sta." : "館林駅 乗り換え";
+        document.getElementById("st-senju").textContent = isEn ? "Kita-senju Arr." : "北千住駅 到着";
+        document.getElementById("lbl-dest-arr").textContent = isEn ? "Est. Arrival" : "到着予定";
+
+        const nextRoute = senjuFullRoutes.find(r => {
+          const [h, m] = r.kuzuDep.split(":").map(Number);
+          return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
+        });
+
+        if (nextRoute) {
+          document.getElementById("origin-dep-time").textContent = nextRoute.kuzuDep;
+          document.getElementById("transfer-time").textContent = nextRoute.tateArr === "---" ? (isEn ? "Direct" : "直通") : `${nextRoute.tateArr}着 / ${nextRoute.tateDep}発`;
+          document.getElementById("lbl-transfer-info").textContent = isEn ? nextRoute.noteEn : nextRoute.noteJa;
+          document.getElementById("dest-arr-time").textContent = nextRoute.senjuArr;
+
+          const [h, m] = nextRoute.kuzuDep.split(":").map(Number);
+          const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
+          countdownEl.textContent = `${isEn ? "In " : "あと "}${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
         } else {
-          document.getElementById("tatebayashi-time").textContent = isEnglish 
-            ? `${nextRoute.tateArr} Arr / ${nextRoute.tateDep} Dep`
-            : `${nextRoute.tateArr}着 / ${nextRoute.tateDep}発`;
+          resetFlow("--:--", "運行終了", "--:--");
         }
 
-        // 列車種別・案内テキストを下段にすっきり表示
-        document.getElementById("lbl-transfer-info").textContent = isEnglish ? nextRoute.noteEn : nextRoute.noteJa;
+      } else if (displayMode === 2) {
+        // --- モード2：佐野駅乗り換え（JR両毛線・小山方面） ---
+        document.getElementById("card-badge").textContent = "OYAMA ROUTE";
+        document.getElementById("info-card-title").textContent = "佐野駅乗り換え ➔ JR両毛線（小山方面）接続";
+        
+        document.getElementById("st-origin").textContent = "葛生";
+        document.getElementById("lbl-origin-line").textContent = "東武佐野線";
+        document.getElementById("st-transfer").textContent = "佐野駅 乗り換え";
+        document.getElementById("st-senju").textContent = "小山駅 到着";
+        document.getElementById("lbl-dest-arr").textContent = "到着予定";
 
-        document.getElementById("senju-arr-time").textContent = nextRoute.senjuArr;
+        const nextRoute = sanoOyamaRoutes.find(r => {
+          const [h, m] = r.kuzuDep.split(":").map(Number);
+          return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
+        });
 
-        const [h, m] = nextRoute.kuzuDep.split(":").map(Number);
-        const targetSec = (h * 60 + m) * 60;
-        const currentTotalSec = currentMin * 60 + currentSec;
-        const diffSec = targetSec - currentTotalSec;
+        if (nextRoute) {
+          document.getElementById("origin-dep-time").textContent = nextRoute.kuzuDep;
+          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr}着 / ${nextRoute.sanoDep}発`;
+          document.getElementById("lbl-transfer-info").textContent = nextRoute.lineJa;
+          document.getElementById("dest-arr-time").textContent = nextRoute.oyamaArr;
 
-        const min = Math.floor(diffSec / 60);
-        const sec = diffSec % 60;
-        const countdownEl = document.getElementById("senju-countdown");
+          const [h, m] = nextRoute.kuzuDep.split(":").map(Number);
+          const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
+          countdownEl.textContent = `あと ${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
+        } else {
+          resetFlow("--:--", "本日の運行終了", "--:--");
+        }
 
-        const prefixText = isEnglish ? "In " : "あと ";
-        countdownEl.textContent = `${prefixText}${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-      } else {
-        document.getElementById("kuzu-dep-time").textContent = "--:--";
-        document.getElementById("tatebayashi-time").textContent = "--:-- Arr / --:-- Dep";
-        document.getElementById("senju-arr-time").textContent = "--:--";
-        document.getElementById("senju-countdown").textContent = isEnglish ? "End of Service" : "本日の運行終了";
+      } else if (displayMode === 3) {
+        // --- モード3：佐野駅乗り換え（JR両毛線・高崎方面） ---
+        document.getElementById("card-badge").textContent = "TAKASAKI ROUTE";
+        document.getElementById("info-card-title").textContent = "佐野駅乗り換え ➔ JR両毛線（高崎方面）接続";
+        
+        document.getElementById("st-origin").textContent = "葛生";
+        document.getElementById("lbl-origin-line").textContent = "東武佐野線";
+        document.getElementById("st-transfer").textContent = "佐野駅 乗り換え";
+        document.getElementById("st-senju").textContent = "高崎駅 到着";
+        document.getElementById("lbl-dest-arr").textContent = "到着予定";
+
+        const nextRoute = sanoTakasakiRoutes.find(r => {
+          const [h, m] = r.kuzuDep.split(":").map(Number);
+          return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
+        });
+
+        if (nextRoute) {
+          document.getElementById("origin-dep-time").textContent = nextRoute.kuzuDep;
+          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr}着 / ${nextRoute.sanoDep}発`;
+          document.getElementById("lbl-transfer-info").textContent = nextRoute.lineJa;
+          document.getElementById("dest-arr-time").textContent = nextRoute.takasakiArr;
+
+          const [h, m] = nextRoute.kuzuDep.split(":").map(Number);
+          const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
+          countdownEl.textContent = `あと ${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
+        } else {
+          resetFlow("--:--", "本日の運行終了", "--:--");
+        }
       }
     }
 
-    function setRowData(prefix, data) {
+    function resetFlow(t1, t2, t3) {
+      document.getElementById("origin-dep-time").textContent = t1;
+      document.getElementById("transfer-time").textContent = t2;
+      document.getElementById("dest-arr-time").textContent = t3;
+      document.getElementById("info-countdown").textContent = "終了";
+    }
+
+    function setRowData(prefix, data, isEn) {
       if (data) {
         document.getElementById(`${prefix}-time`).textContent = data.time;
-        document.getElementById(`${prefix}-dest`).textContent = isEnglish ? data.destEn : data.destJa;
-        document.getElementById(`${prefix}-cars`).innerHTML = `${data.cars}<span class="cars-unit">${isEnglish ? 'Cars' : '両'}</span>`;
-        document.getElementById(`${prefix}-badge`).textContent = isEnglish ? data.typeEn : data.typeJa;
+        document.getElementById(`${prefix}-dest`).textContent = isEn ? data.destEn : data.destJa;
+        document.getElementById(`${prefix}-cars`).innerHTML = `${data.cars}<span class="cars-unit">${isEn ? 'Cars' : '両'}</span>`;
+        document.getElementById(`${prefix}-badge`).textContent = isEn ? data.typeEn : data.typeJa;
         document.getElementById(`${prefix}-badge`).className = `train-badge ${data.badge}`;
       } else {
         document.getElementById(`${prefix}-time`).textContent = "--:--";
-        document.getElementById(`${prefix}-dest`).textContent = isEnglish ? "Terminated" : "終了";
-        document.getElementById(`${prefix}-cars`).innerHTML = `--<span class="cars-unit">${isEnglish ? 'Cars' : '両'}</span>`;
+        document.getElementById(`${prefix}-dest`).textContent = isEn ? "Terminated" : "終了";
+        document.getElementById(`${prefix}-cars`).innerHTML = `--<span class="cars-unit">${isEn ? 'Cars' : '両'}</span>`;
       }
     }
 
