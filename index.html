@@ -225,7 +225,7 @@
       justify-content: center;
     }
 
-    /* ★ 3方面縦並び乗換案内セクション ★ */
+    /* 3方面縦並び乗換案内セクション */
     .info-section-multi {
       background: #050a14;
       border: 2px solid #1c2d4a;
@@ -250,7 +250,7 @@
 
     .transfer-row {
       display: grid;
-      grid-template-columns: 170px 1fr 28px 1.5fr 28px 1.2fr 110px;
+      grid-template-columns: 180px 1fr 28px 1.5fr 28px 1.2fr 110px;
       align-items: center;
       background: #0d1527;
       border: 1px solid #1e2e4a;
@@ -259,9 +259,8 @@
       height: 52px;
     }
 
-    /* 方面バッジ */
     .dir-badge {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 900;
       padding: 4px 8px;
       border-radius: 4px;
@@ -282,7 +281,7 @@
     }
 
     .tf-station-title {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #94a3b8;
       font-weight: bold;
       white-space: nowrap;
@@ -310,7 +309,6 @@
       font-size: 1.45rem;
       font-weight: 700;
       color: var(--ok-green);
-      line-height: 1;
     }
 
     .tf-arrow {
@@ -390,7 +388,7 @@
       <div class="cars-info" id="m3-cars">--<span class="cars-unit" id="m3-unit">両</span></div>
     </div>
 
-    <!-- 3. ★ 3方面縦並び 接続案内エリア ★ -->
+    <!-- 3. 3方面縦並び 接続案内エリア -->
     <div class="info-section-multi">
       <div class="transfer-header-label" id="lbl-transfer-title">
         <span>🔄 主要方面への乗換接続案内（館林・佐野経由）</span>
@@ -552,7 +550,7 @@
         ? "for Sano, Tatebayashi, Asakusa"
         : "佐野・館林・浅草 方面";
 
-      // 乗換案内セクションラベルの切替
+      // 下段接続セクションの日英切替
       document.getElementById("lbl-transfer-title").textContent = isEnglish
         ? "🔄 Transfer Connections for Major Destinations (via Tatebayashi / Sano)"
         : "🔄 主要方面への乗換接続案内（館林・佐野経由）";
@@ -649,7 +647,7 @@
         }
       }
 
-      // 2. 下段 3方面すべての接続更新
+      // 2. 下段 3方面すべての接続更新（日英対応）
       // --- 段1: 北千住・浅草方面 ---
       const r1 = masterConnections.find(r => {
         const [h, m] = r.time.split(":").map(Number);
