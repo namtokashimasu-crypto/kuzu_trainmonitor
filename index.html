@@ -64,19 +64,11 @@
       justify-content: space-between;
       border-bottom: 2px solid #333;
       height: 50px;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
-    .banner-left {
-      display: flex;
-      align-items: center;
-    }
-
-    .banner-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
+    .banner-left { display: flex; align-items: center; }
+    .banner-right { display: flex; align-items: center; gap: 15px; }
 
     .platform-num {
       background: linear-gradient(135deg, #111, #333);
@@ -105,7 +97,7 @@
       align-items: center;
     }
 
-    /* 現在時刻表示 (コロン点滅対応) */
+    /* 時計表示 (コロン点滅) */
     .clock-box {
       font-family: 'Chakra Petch', sans-serif;
       font-size: 1.8rem;
@@ -127,9 +119,7 @@
       transition: opacity 0.1s;
     }
 
-    .clock-colon.blink-off {
-      opacity: 0;
-    }
+    .clock-colon.blink-off { opacity: 0; }
 
     /* 音声トグルボタン */
     .audio-btn {
@@ -157,8 +147,8 @@
       color: var(--text-gray);
       font-size: 0.95rem;
       border-bottom: 1px solid #444;
-      height: 30px;
-      line-height: 30px;
+      height: 28px;
+      line-height: 28px;
       text-align: center;
     }
 
@@ -169,15 +159,15 @@
       align-items: center;
       border-bottom: 1px solid #222;
       text-align: center;
-      height: 85px;
+      height: 75px;
     }
 
     .dept-time {
       font-family: 'Chakra Petch', sans-serif;
-      font-size: 3.5rem;
+      font-size: 3.2rem;
       font-weight: 700;
       color: var(--text-white);
-      line-height: 85px;
+      line-height: 75px;
     }
 
     .badge-container {
@@ -188,10 +178,10 @@
     }
 
     .train-badge {
-      width: 140px;
-      height: 42px;
-      line-height: 42px;
-      font-size: 1.3rem;
+      width: 130px;
+      height: 38px;
+      line-height: 38px;
+      font-size: 1.25rem;
       font-weight: 900;
       border-radius: 4px;
       text-align: center;
@@ -202,171 +192,144 @@
     .badge-end { background-color: #333333; color: #aaaaaa; }
 
     .destination {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 900;
       color: var(--text-white);
       text-align: left;
       padding-left: 30px;
-      line-height: 85px;
+      line-height: 75px;
       white-space: nowrap;
     }
 
     .cars-info {
       font-family: 'Chakra Petch', sans-serif;
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: var(--text-white);
-      line-height: 85px;
+      line-height: 75px;
     }
 
-    .cars-unit { font-size: 1.1rem; font-weight: normal; margin-left: 4px; }
+    .cars-unit { font-size: 1rem; font-weight: normal; margin-left: 4px; }
 
     /* 運行状況テロップバー */
     .notice-bar {
       background-color: #111;
       color: var(--ok-green);
       border: 1px solid #333;
-      height: 48px;
-      margin: 15px 0;
-      font-size: 1.2rem;
+      height: 42px;
+      margin: 10px 0;
+      font-size: 1.15rem;
       font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* 下段マルチ接続カード */
-    .info-section {
-      background: #060b18;
+    /* ★ 3方面縦並び乗換案内セクション ★ */
+    .info-section-multi {
+      background: #050a14;
       border: 2px solid #1c2d4a;
       border-radius: 8px;
-      padding: 12px 18px;
-      height: 185px;
-    }
-
-    .info-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 32px;
-      margin-bottom: 8px;
-    }
-
-    .info-title-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .route-badge {
-      background: linear-gradient(135deg, #0088ff, #0055cc);
-      color: #fff;
-      font-size: 0.85rem;
-      font-weight: 900;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-family: 'Noto Sans JP', sans-serif;
-      letter-spacing: 0.5px;
-    }
-
-    .info-title-text {
-      color: #38bdf8;
-      font-size: 1.2rem;
-      font-weight: 900;
-    }
-
-    .info-countdown-box {
-      background: #000;
-      border: 1px solid #2a3a57;
-      padding: 4px 14px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 1.25rem;
-      color: var(--ok-green);
-      font-weight: bold;
-    }
-
-    .info-connection-flow {
-      display: grid;
-      grid-template-columns: 1fr 28px 1.5fr 28px 1fr;
-      align-items: center;
-      gap: 6px;
-      height: 115px;
-    }
-
-    .step-card {
-      background: #111625;
-      border: 1px solid #233555;
-      border-radius: 6px;
-      padding: 8px 6px;
-      height: 115px;
+      padding: 10px 14px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      text-align: center;
+      gap: 8px;
     }
 
-    .step-card.highlight {
-      background: #0f1c33;
-      border-color: #38bdf8;
-    }
-
-    .step-station-row {
+    .transfer-header-label {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #38bdf8;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 4px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
+      gap: 8px;
     }
 
-    .step-station-name {
-      font-size: 1.05rem;
-      color: #e2e8f0;
+    .transfer-row {
+      display: grid;
+      grid-template-columns: 170px 1fr 28px 1.5fr 28px 1.2fr 110px;
+      align-items: center;
+      background: #0d1527;
+      border: 1px solid #1e2e4a;
+      border-radius: 6px;
+      padding: 6px 10px;
+      height: 52px;
+    }
+
+    /* 方面バッジ */
+    .dir-badge {
+      font-size: 0.9rem;
       font-weight: 900;
-    }
-
-    .platform-badge {
-      background: #ffcc00;
-      color: #000;
-      font-size: 0.75rem;
-      font-weight: 900;
-      padding: 1px 6px;
-      border-radius: 3px;
-    }
-
-    .step-time-main {
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: 2.1rem;
-      font-weight: 700;
-      color: var(--text-yellow);
-      line-height: 1.1;
-    }
-
-    .step-time-transfer {
-      font-family: 'Chakra Petch', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--text-orange);
-      line-height: 1.1;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-align: center;
       white-space: nowrap;
     }
 
-    .step-sub-label {
-      font-size: 0.85rem;
+    .dir-senju { background: linear-gradient(135deg, #0066ff, #0033aa); color: #fff; }
+    .dir-oyama { background: linear-gradient(135deg, #00b050, #007030); color: #fff; }
+    .dir-taka  { background: linear-gradient(135deg, #ff8c00, #cc5500); color: #fff; }
+
+    .tf-step-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .tf-station-title {
+      font-size: 0.8rem;
       color: #94a3b8;
       font-weight: bold;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 100%;
     }
 
-    .arrow {
+    .tf-time-main {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-yellow);
+      line-height: 1;
+    }
+
+    .tf-time-transfer {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-orange);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .tf-time-dest {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--ok-green);
+      line-height: 1;
+    }
+
+    .tf-arrow {
       color: #38bdf8;
-      font-size: 1.4rem;
+      font-size: 1.1rem;
       font-weight: bold;
       text-align: center;
+    }
+
+    .tf-countdown {
+      background: #000;
+      border: 1px solid #2a3a57;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 1.05rem;
+      color: var(--ok-green);
+      font-weight: bold;
+      text-align: center;
+      padding: 4px 0;
     }
   </style>
 </head>
@@ -378,9 +341,7 @@
     <div class="top-banner">
       <div class="banner-left">
         <div class="platform-num">1</div>
-        <div class="banner-text" id="top-banner-text">
-          佐野・館林・浅草 方面
-        </div>
+        <div class="banner-text" id="top-banner-text">佐野・館林・浅草 方面</div>
       </div>
       <div class="banner-right">
         <button class="audio-btn" id="audio-toggle-btn" onclick="toggleAudio()">🔊 音声: OFF (クリックで有効化)</button>
@@ -429,63 +390,82 @@
       <div class="cars-info" id="m3-cars">--<span class="cars-unit" id="m3-unit">両</span></div>
     </div>
 
-    <!-- 3. 高視認性 マルチ乗換案内カード -->
-    <div class="info-section">
-      <div class="info-header">
-        <div class="info-title-box">
-          <span class="route-badge" id="card-badge">乗換案内</span>
-          <span class="info-title-text" id="info-card-title">北千住・浅草方面 ♻️ 高崎・小山方面</span>
-        </div>
-        <div class="info-countdown-box" id="info-countdown">
-          あと --:--
-        </div>
+    <!-- 3. ★ 3方面縦並び 接続案内エリア ★ -->
+    <div class="info-section-multi">
+      <div class="transfer-header-label" id="lbl-transfer-title">
+        <span>🔄 主要方面への乗換接続案内（館林・佐野経由）</span>
       </div>
 
-      <div class="info-connection-flow">
-        <!-- 葛生発 -->
-        <div class="step-card">
-          <div class="step-station-row">
-            <span class="step-station-name" id="st-origin">葛生</span>
-            <span class="platform-badge">1番線</span>
-          </div>
-          <div class="step-time-main" id="origin-dep-time">--:--</div>
-          <div class="step-sub-label" id="lbl-origin-line">東武佐野線</div>
+      <!-- 段1: 北千住・浅草方面 -->
+      <div class="transfer-row">
+        <div class="dir-badge dir-senju" id="dir-label-1">北千住・浅草方面</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-kuzu-1">葛生発</span>
+          <span class="tf-time-main" id="r1-kuzu-dep">--:--</span>
         </div>
-
-        <div class="arrow">➔</div>
-
-        <!-- 乗り換え駅 -->
-        <div class="step-card highlight">
-          <div class="step-station-row">
-            <span class="step-station-name" id="st-transfer">館林駅 乗り換え</span>
-            <span class="platform-badge" id="pf-transfer">上り</span>
-          </div>
-          <div class="step-time-transfer" id="transfer-time">--:-- / --:--</div>
-          <div class="step-sub-label" id="lbl-transfer-info" style="color: #ffcc00;">--</div>
+        <div class="tf-arrow">➔</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-trans-1">館林 乗り換え</span>
+          <span class="tf-time-transfer" id="r1-trans-time">--:-- / --:--</span>
         </div>
-
-        <div class="arrow">➔</div>
-
-        <!-- 目的地到着 -->
-        <div class="step-card">
-          <div class="step-station-row">
-            <span class="step-station-name" id="st-dest">北千住駅 到着</span>
-          </div>
-          <div class="step-time-main" id="dest-arr-time" style="color: var(--ok-green);">--:--</div>
-          <div class="step-sub-label" id="lbl-dest-arr">到着予定</div>
+        <div class="tf-arrow">➔</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-arr-1">北千住 到着</span>
+          <span class="tf-time-dest" id="r1-arr-time">--:--</span>
         </div>
+        <div class="tf-countdown" id="r1-countdown">あと --:--</div>
       </div>
+
+      <!-- 段2: 小山方面 -->
+      <div class="transfer-row">
+        <div class="dir-badge dir-oyama" id="dir-label-2">JR小山方面</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-kuzu-2">葛生発</span>
+          <span class="tf-time-main" id="r2-kuzu-dep">--:--</span>
+        </div>
+        <div class="tf-arrow">➔</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-trans-2">佐野 乗り換え</span>
+          <span class="tf-time-transfer" id="r2-trans-time">--:-- / --:--</span>
+        </div>
+        <div class="tf-arrow">➔</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-arr-2">小山 到着</span>
+          <span class="tf-time-dest" id="r2-arr-time">--:--</span>
+        </div>
+        <div class="tf-countdown" id="r2-countdown">あと --:--</div>
+      </div>
+
+      <!-- 段3: 高崎方面 -->
+      <div class="transfer-row">
+        <div class="dir-badge dir-taka" id="dir-label-3">JR高崎方面</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-kuzu-3">葛生発</span>
+          <span class="tf-time-main" id="r3-kuzu-dep">--:--</span>
+        </div>
+        <div class="tf-arrow">➔</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-trans-3">佐野 乗り換え</span>
+          <span class="tf-time-transfer" id="r3-trans-time">--:-- / --:--</span>
+        </div>
+        <div class="tf-arrow">➔</div>
+        <div class="tf-step-box">
+          <span class="tf-station-title" id="st-arr-3">高崎 到着</span>
+          <span class="tf-time-dest" id="r3-arr-time">--:--</span>
+        </div>
+        <div class="tf-countdown" id="r3-countdown">あと --:--</div>
+      </div>
+
     </div>
 
   </div>
 
   <script>
-    let displayMode = 0; // 0: 北千住(日), 1: 北千住(英), 2: 佐野発・両毛線小山方面(日), 3: 佐野発・両毛線高崎方面(日)
+    let isEnglish = false;
     let audioEnabled = false;
     let audioCtx = null;
     let lastChimeTime = "";
 
-    // ★ 1秒ごとのコロン点滅対応 時計更新関数 ★
     function updateClock() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
@@ -495,7 +475,6 @@
       document.getElementById("clock-hour").textContent = h;
       document.getElementById("clock-min").textContent = m;
 
-      // 奇数秒の時にコロンを非表示（消灯）にして点滅効果を出す
       const colonEl = document.getElementById("clock-colon");
       if (sec % 2 === 1) {
         colonEl.classList.add("blink-off");
@@ -552,6 +531,49 @@
       if (!audioEnabled) toggleAudio();
     }, { once: true });
 
+    // 3秒ごとに日英自動切替
+    setInterval(() => {
+      isEnglish = !isEnglish;
+      updateHeaderTexts();
+      updateMonitor();
+    }, 3000);
+
+    function updateHeaderTexts() {
+      document.getElementById("hdr-dept").textContent = isEnglish ? "Departure time" : "発車時刻";
+      document.getElementById("hdr-train").textContent = isEnglish ? "Train" : "種別";
+      document.getElementById("hdr-to").textContent = isEnglish ? "To" : "行先";
+      document.getElementById("hdr-cars").textContent = isEnglish ? "Cars" : "両数";
+      
+      document.getElementById("m1-unit").textContent = isEnglish ? "Cars" : "両";
+      document.getElementById("m2-unit").textContent = isEnglish ? "Cars" : "両";
+      document.getElementById("m3-unit").textContent = isEnglish ? "Cars" : "両";
+
+      document.getElementById("top-banner-text").textContent = isEnglish 
+        ? "for Sano, Tatebayashi, Asakusa"
+        : "佐野・館林・浅草 方面";
+
+      // 乗換案内セクションラベルの切替
+      document.getElementById("lbl-transfer-title").textContent = isEnglish
+        ? "🔄 Transfer Connections for Major Destinations (via Tatebayashi / Sano)"
+        : "🔄 主要方面への乗換接続案内（館林・佐野経由）";
+
+      document.getElementById("dir-label-1").textContent = isEnglish ? "Kita-senju & Asakusa" : "北千住・浅草方面";
+      document.getElementById("dir-label-2").textContent = isEnglish ? "JR Oyama Line" : "JR小山方面";
+      document.getElementById("dir-label-3").textContent = isEnglish ? "JR Takasaki Line" : "JR高崎方面";
+
+      document.getElementById("st-kuzu-1").textContent = isEnglish ? "Dep. Kuzuu" : "葛生発";
+      document.getElementById("st-kuzu-2").textContent = isEnglish ? "Dep. Kuzuu" : "葛生発";
+      document.getElementById("st-kuzu-3").textContent = isEnglish ? "Dep. Kuzuu" : "葛生発";
+
+      document.getElementById("st-trans-1").textContent = isEnglish ? "Trans. Tatebayashi" : "館林 乗り換え";
+      document.getElementById("st-trans-2").textContent = isEnglish ? "Trans. Sano" : "佐野 乗り換え";
+      document.getElementById("st-trans-3").textContent = isEnglish ? "Trans. Sano" : "佐野 乗り換え";
+
+      document.getElementById("st-arr-1").textContent = isEnglish ? "Arr. Kita-senju" : "北千住 到着";
+      document.getElementById("st-arr-2").textContent = isEnglish ? "Arr. Oyama" : "小山 到着";
+      document.getElementById("st-arr-3").textContent = isEnglish ? "Arr. Takasaki" : "高崎 到着";
+    }
+
     // マスター接続データ（全31便）
     const masterConnections = [
       { "time": "05:10", "sanoArr": "05:27", "oyamaDep": "05:48", "oyamaArr": "06:16", "takasakiDep": "06:30", "takasakiArr": "08:07", "tateArr": "05:45", "senjuDep": "05:53", "senjuArr": "07:15", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
@@ -587,31 +609,8 @@
       { "time": "23:02", "sanoArr": "23:19", "oyamaDep": "---",   "oyamaArr": "---",   "takasakiDep": "---",   "takasakiArr": "---",   "tateArr": "23:37", "senjuDep": "---",   "senjuArr": "---",   "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" }
     ];
 
-    // 4秒ごとにモードをローテーション
-    setInterval(() => {
-      displayMode = (displayMode + 1) % 4;
-      updateHeaderTexts();
-      updateMonitor();
-    }, 4000);
-
-    function updateHeaderTexts() {
-      const isEnglish = (displayMode === 1);
-      document.getElementById("hdr-dept").textContent = isEnglish ? "Departure time" : "発車時刻";
-      document.getElementById("hdr-train").textContent = isEnglish ? "Train" : "種別";
-      document.getElementById("hdr-to").textContent = isEnglish ? "To" : "行先";
-      document.getElementById("hdr-cars").textContent = isEnglish ? "Cars" : "両数";
-      
-      document.getElementById("m1-unit").textContent = isEnglish ? "Cars" : "両";
-      document.getElementById("m2-unit").textContent = isEnglish ? "Cars" : "両";
-      document.getElementById("m3-unit").textContent = isEnglish ? "Cars" : "両";
-
-      document.getElementById("top-banner-text").textContent = isEnglish 
-        ? "for Sano, Tatebayashi, Asakusa"
-        : "佐野・館林・浅草 方面";
-    }
-
     function updateMonitor() {
-      updateClock(); // 1秒ごとの時計＆点滅更新
+      updateClock();
 
       const now = new Date();
       const currentMin = now.getHours() * 60 + now.getMinutes();
@@ -623,30 +622,26 @@
         return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
       });
 
-      const isEnglishMode = (displayMode === 1);
-
       if (upcomingMy.length === 0) {
-        document.getElementById("notice-text").textContent = isEnglishMode 
+        document.getElementById("notice-text").textContent = isEnglish 
           ? "【Notice】 End of today's train service."
           : "【案内】本日の電車は終了いたしました。";
           
-        setRowDataFinished("m1", isEnglishMode);
-        setRowDataFinished("m2", isEnglishMode);
-        setRowDataFinished("m3", isEnglishMode);
+        setRowDataFinished("m1", isEnglish);
+        setRowDataFinished("m2", isEnglish);
+        setRowDataFinished("m3", isEnglish);
       } else {
-        document.getElementById("notice-text").textContent = isEnglishMode
+        document.getElementById("notice-text").textContent = isEnglish
           ? "【Status】 Tobu Sano Line / JR Ryomo Line: Normal Operation"
           : "【運行状況】東武佐野線・JR両毛線：平常運転";
 
-        setRowData("m1", upcomingMy[0], isEnglishMode);
-        setRowData("m2", upcomingMy[1], isEnglishMode);
-        setRowData("m3", upcomingMy[2], isEnglishMode);
+        setRowData("m1", upcomingMy[0], isEnglish);
+        setRowData("m2", upcomingMy[1], isEnglish);
+        setRowData("m3", upcomingMy[2], isEnglish);
 
         const nextTrain = upcomingMy[0];
         const [th, tm] = nextTrain.time.split(":").map(Number);
-        const trainTotalSec = (th * 60 + tm) * 60;
-        const currentTotalSec = currentMin * 60 + currentSec;
-        const diffSec = trainTotalSec - currentTotalSec;
+        const diffSec = ((th * 60 + tm) * 60) - (currentMin * 60 + currentSec);
 
         if (diffSec === 10 && lastChimeTime !== nextTrain.time) {
           playChime();
@@ -654,107 +649,67 @@
         }
       }
 
-      // 2. 下段 マルチ接続カードの更新
-      const countdownEl = document.getElementById("info-countdown");
+      // 2. 下段 3方面すべての接続更新
+      // --- 段1: 北千住・浅草方面 ---
+      const r1 = masterConnections.find(r => {
+        const [h, m] = r.time.split(":").map(Number);
+        return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
+      });
 
-      if (displayMode === 0 || displayMode === 1) {
-        const isEn = (displayMode === 1);
-        document.getElementById("card-badge").textContent = isEn ? "TRANSFER" : "乗換案内";
-        document.getElementById("info-card-title").textContent = isEn 
-          ? "for Kita-senju & Asakusa ♻️ Takasaki / Oyama" 
-          : "北千住・浅草方面 ♻️ 高崎・小山方面";
-        
-        document.getElementById("st-origin").textContent = isEn ? "Kuzuu" : "葛生";
-        document.getElementById("lbl-origin-line").textContent = isEn ? "Tobu Sano Line" : "東武佐野線";
-        document.getElementById("st-transfer").textContent = isEn ? "Tatebayashi Sta." : "館林駅 乗り換え";
-        document.getElementById("pf-transfer").textContent = isEn ? "Inbound" : "上り";
-        document.getElementById("st-dest").textContent = isEn ? "Kita-senju Arr." : "北千住駅 到着";
-        document.getElementById("lbl-dest-arr").textContent = isEn ? "Est. Arrival" : "到着予定";
+      if (r1 && r1.senjuDep !== "---") {
+        document.getElementById("r1-kuzu-dep").textContent = r1.time;
+        document.getElementById("r1-trans-time").textContent = `${r1.tateArr} / ${r1.senjuDep}`;
+        document.getElementById("r1-arr-time").textContent = r1.senjuArr;
 
-        const nextRoute = masterConnections.find(r => {
-          const [h, m] = r.time.split(":").map(Number);
-          return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
-        });
+        const [h, m] = r1.time.split(":").map(Number);
+        const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
+        document.getElementById("r1-countdown").textContent = `${isEnglish ? "In " : "あと "}${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
+      } else {
+        setRowFinished("r1", isEnglish);
+      }
 
-        if (nextRoute && nextRoute.senjuDep !== "---") {
-          document.getElementById("origin-dep-time").textContent = nextRoute.time;
-          document.getElementById("transfer-time").textContent = `${nextRoute.tateArr} / ${nextRoute.senjuDep}`;
-          document.getElementById("lbl-transfer-info").textContent = isEn ? "Tobu Skytree Line" : (nextRoute.time === "08:01" ? "特急リバティ(直通)" : "東武スカイツリーライン");
-          document.getElementById("dest-arr-time").textContent = nextRoute.senjuArr;
+      // --- 段2: 小山方面 ---
+      const r2 = masterConnections.find(r => {
+        const [h, m] = r.time.split(":").map(Number);
+        return ((h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0)) && r.oyamaDep !== "---";
+      });
 
-          const [h, m] = nextRoute.time.split(":").map(Number);
-          const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
-          countdownEl.textContent = `${isEn ? "In " : "あと "}${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
-        } else {
-          resetFlow("--:--", isEn ? "No Service Today" : "本日の接続は終了しました", "--:--", isEn);
-        }
+      if (r2) {
+        document.getElementById("r2-kuzu-dep").textContent = r2.time;
+        document.getElementById("r2-trans-time").textContent = `${r2.sanoArr} / ${r2.oyamaDep}`;
+        document.getElementById("r2-arr-time").textContent = r2.oyamaArr;
 
-      } else if (displayMode === 2) {
-        document.getElementById("card-badge").textContent = "乗換案内";
-        document.getElementById("info-card-title").textContent = "小山方面 (JR両毛線) ♻️ 北千住・高崎方面";
-        
-        document.getElementById("st-origin").textContent = "葛生";
-        document.getElementById("lbl-origin-line").textContent = "東武佐野線";
-        document.getElementById("st-transfer").textContent = "佐野駅 乗り換え";
-        document.getElementById("pf-transfer").textContent = "2番線 (下り)";
-        document.getElementById("st-dest").textContent = "小山駅 到着";
-        document.getElementById("lbl-dest-arr").textContent = "到着予定";
+        const [h, m] = r2.time.split(":").map(Number);
+        const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
+        document.getElementById("r2-countdown").textContent = `${isEnglish ? "In " : "あと "}${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
+      } else {
+        setRowFinished("r2", isEnglish);
+      }
 
-        const nextRoute = masterConnections.find(r => {
-          const [h, m] = r.time.split(":").map(Number);
-          return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
-        });
+      // --- 段3: 高崎方面 ---
+      const r3 = masterConnections.find(r => {
+        const [h, m] = r.time.split(":").map(Number);
+        return ((h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0)) && r.takasakiDep !== "---";
+      });
 
-        if (nextRoute && nextRoute.oyamaDep !== "---") {
-          document.getElementById("origin-dep-time").textContent = nextRoute.time;
-          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr} / ${nextRoute.oyamaDep}`;
-          document.getElementById("lbl-transfer-info").textContent = "JR両毛線 (小山行)";
-          document.getElementById("dest-arr-time").textContent = nextRoute.oyamaArr;
+      if (r3) {
+        document.getElementById("r3-kuzu-dep").textContent = r3.time;
+        document.getElementById("r3-trans-time").textContent = `${r3.sanoArr} / ${r3.takasakiDep}`;
+        document.getElementById("r3-arr-time").textContent = r3.takasakiArr;
 
-          const [h, m] = nextRoute.time.split(":").map(Number);
-          const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
-          countdownEl.textContent = `あと ${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
-        } else {
-          resetFlow("--:--", "本日の接続は終了しました", "--:--", false);
-        }
-
-      } else if (displayMode === 3) {
-        document.getElementById("card-badge").textContent = "乗換案内";
-        document.getElementById("info-card-title").textContent = "高崎方面 (JR両毛線) ♻️ 北千住・小山方面";
-        
-        document.getElementById("st-origin").textContent = "葛生";
-        document.getElementById("lbl-origin-line").textContent = "東武佐野線";
-        document.getElementById("st-transfer").textContent = "佐野駅 乗り換え";
-        document.getElementById("pf-transfer").textContent = "1番線 (上り)";
-        document.getElementById("st-dest").textContent = "高崎駅 到着";
-        document.getElementById("lbl-dest-arr").textContent = "到着予定";
-
-        const nextRoute = masterConnections.find(r => {
-          const [h, m] = r.time.split(":").map(Number);
-          return (h * 60 + m) > currentMin || ((h * 60 + m) === currentMin && currentSec === 0);
-        });
-
-        if (nextRoute && nextRoute.takasakiDep !== "---") {
-          document.getElementById("origin-dep-time").textContent = nextRoute.time;
-          document.getElementById("transfer-time").textContent = `${nextRoute.sanoArr} / ${nextRoute.takasakiDep}`;
-          document.getElementById("lbl-transfer-info").textContent = "JR両毛線 (高崎方面)";
-          document.getElementById("dest-arr-time").textContent = nextRoute.takasakiArr;
-
-          const [h, m] = nextRoute.time.split(":").map(Number);
-          const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
-          countdownEl.textContent = `あと ${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
-        } else {
-          resetFlow("--:--", "本日の接続は終了しました", "--:--", false);
-        }
+        const [h, m] = r3.time.split(":").map(Number);
+        const diffSec = ((h * 60 + m) * 60) - (currentMin * 60 + currentSec);
+        document.getElementById("r3-countdown").textContent = `${isEnglish ? "In " : "あと "}${String(Math.floor(diffSec/60)).padStart(2,'0')}:${String(diffSec%60).padStart(2,'0')}`;
+      } else {
+        setRowFinished("r3", isEnglish);
       }
     }
 
-    function resetFlow(t1, t2, t3, isEn) {
-      document.getElementById("origin-dep-time").textContent = t1;
-      document.getElementById("transfer-time").textContent = t2;
-      document.getElementById("dest-arr-time").textContent = t3;
-      document.getElementById("lbl-transfer-info").textContent = "---";
-      document.getElementById("info-countdown").textContent = isEn ? "Finished" : "終電終了";
+    function setRowFinished(prefix, isEn) {
+      document.getElementById(`${prefix}-kuzu-dep`).textContent = "--:--";
+      document.getElementById(`${prefix}-trans-time`).textContent = "--:-- / --:--";
+      document.getElementById(`${prefix}-arr-time`).textContent = "--:--";
+      document.getElementById(`${prefix}-countdown`).textContent = isEn ? "Ended" : "接続終了";
     }
 
     function setRowData(prefix, data, isEn) {
