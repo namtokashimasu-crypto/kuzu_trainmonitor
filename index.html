@@ -57,7 +57,7 @@
       100% { border-color: #ff3333; }
     }
 
-    /* 上部ホーム案内 */
+    /* 上部ホーム案内 ＆ 時計ヘッダー */
     .top-banner {
       display: flex;
       align-items: center;
@@ -70,6 +70,12 @@
     .banner-left {
       display: flex;
       align-items: center;
+    }
+
+    .banner-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
     .platform-num {
@@ -97,6 +103,32 @@
       height: 50px;
       display: flex;
       align-items: center;
+    }
+
+    /* 現在時刻表示 (コロン点滅対応) */
+    .clock-box {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-yellow);
+      background: #111;
+      border: 1px solid #333;
+      padding: 2px 14px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+    }
+
+    .clock-colon {
+      display: inline-block;
+      width: 0.4em;
+      text-align: center;
+      transition: opacity 0.1s;
+    }
+
+    .clock-colon.blink-off {
+      opacity: 0;
     }
 
     /* 音声トグルボタン */
@@ -203,13 +235,6 @@
       justify-content: center;
     }
 
-    .notice-bar.has-delay {
-      background-color: #4a0000;
-      color: #ffffff;
-      border-color: var(--delay-red);
-      font-size: 1.35rem;
-    }
-
     /* 下段マルチ接続カード */
     .info-section {
       background: #060b18;
@@ -230,23 +255,23 @@
     .info-title-box {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .route-badge {
       background: linear-gradient(135deg, #0088ff, #0055cc);
       color: #fff;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 900;
       padding: 4px 10px;
       border-radius: 4px;
-      font-family: 'Chakra Petch', sans-serif;
+      font-family: 'Noto Sans JP', sans-serif;
       letter-spacing: 0.5px;
     }
 
     .info-title-text {
       color: #38bdf8;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 900;
     }
 
@@ -349,7 +374,7 @@
 
   <div class="board-container" id="main-board">
     
-    <!-- 1. 葛生駅 ホーム案内 -->
+    <!-- 1. 葛生駅 ホーム案内 ＆ 時計 -->
     <div class="top-banner">
       <div class="banner-left">
         <div class="platform-num">1</div>
@@ -357,7 +382,14 @@
           佐野・館林・浅草 方面
         </div>
       </div>
-      <button class="audio-btn" id="audio-toggle-btn" onclick="toggleAudio()">🔊 音声: OFF (クリックで有効化)</button>
+      <div class="banner-right">
+        <button class="audio-btn" id="audio-toggle-btn" onclick="toggleAudio()">🔊 音声: OFF (クリックで有効化)</button>
+        <div class="clock-box">
+          <span id="clock-hour">00</span>
+          <span class="clock-colon" id="clock-colon">:</span>
+          <span id="clock-min">00</span>
+        </div>
+      </div>
     </div>
 
     <!-- 2. 発車標テーブルヘッダー -->
@@ -368,7 +400,7 @@
       <div id="hdr-cars">両数</div>
     </div>
 
-    <!-- 先発 (1本目) -->
+    <!-- 先発 -->
     <div class="board-row">
       <div class="dept-time" id="m1-time">--:--</div>
       <div class="badge-container"><span class="train-badge badge-local" id="m1-badge">普通</span></div>
@@ -381,7 +413,7 @@
       【運行状況】東武佐野線・JR両毛線：平常運転
     </div>
 
-    <!-- 次発 (2本目) -->
+    <!-- 次発 -->
     <div class="board-row">
       <div class="dept-time" id="m2-time">--:--</div>
       <div class="badge-container"><span class="train-badge badge-local" id="m2-badge">普通</span></div>
@@ -389,7 +421,7 @@
       <div class="cars-info" id="m2-cars">--<span class="cars-unit" id="m2-unit">両</span></div>
     </div>
 
-    <!-- 次々発 (3本目) -->
+    <!-- 次々発 -->
     <div class="board-row" style="border: none;">
       <div class="dept-time" id="m3-time">--:--</div>
       <div class="badge-container"><span class="train-badge badge-local" id="m3-badge">普通</span></div>
@@ -397,12 +429,12 @@
       <div class="cars-info" id="m3-cars">--<span class="cars-unit" id="m3-unit">両</span></div>
     </div>
 
-    <!-- 3. マルチ接続案内カード -->
+    <!-- 3. 高視認性 マルチ乗換案内カード -->
     <div class="info-section">
       <div class="info-header">
         <div class="info-title-box">
-          <span class="route-badge" id="card-badge">TOKYO ROUTE</span>
-          <span class="info-title-text" id="info-card-title">北千住方面 接続案内</span>
+          <span class="route-badge" id="card-badge">乗換案内</span>
+          <span class="info-title-text" id="info-card-title">北千住・浅草方面 ♻️ 高崎・小山方面</span>
         </div>
         <div class="info-countdown-box" id="info-countdown">
           あと --:--
@@ -448,25 +480,37 @@
   </div>
 
   <script>
-    let displayMode = 0; 
+    let displayMode = 0; // 0: 北千住(日), 1: 北千住(英), 2: 佐野発・両毛線小山方面(日), 3: 佐野発・両毛線高崎方面(日)
     let audioEnabled = false;
     let audioCtx = null;
-    let lastChimeTime = ""; // 重複再生防止用
+    let lastChimeTime = "";
 
-    // ★ Web Audio API によるチャイム生成（ピン・ポン♪） ★
+    // ★ 1秒ごとのコロン点滅対応 時計更新関数 ★
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const sec = now.getSeconds();
+
+      document.getElementById("clock-hour").textContent = h;
+      document.getElementById("clock-min").textContent = m;
+
+      // 奇数秒の時にコロンを非表示（消灯）にして点滅効果を出す
+      const colonEl = document.getElementById("clock-colon");
+      if (sec % 2 === 1) {
+        colonEl.classList.add("blink-off");
+      } else {
+        colonEl.classList.remove("blink-off");
+      }
+    }
+
     function playChime() {
       if (!audioEnabled) return;
       try {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
 
         const now = audioCtx.currentTime;
-
-        // 1音目 (ミ: E5 / 659.25 Hz)
         const osc1 = audioCtx.createOscillator();
         const gain1 = audioCtx.createGain();
         osc1.type = 'sine';
@@ -478,7 +522,6 @@
         osc1.start(now);
         osc1.stop(now + 0.8);
 
-        // 2音目 (ド: C5 / 523.25 Hz - 0.35秒後)
         const osc2 = audioCtx.createOscillator();
         const gain2 = audioCtx.createGain();
         osc2.type = 'sine';
@@ -489,10 +532,7 @@
         gain2.connect(audioCtx.destination);
         osc2.start(now + 0.35);
         osc2.stop(now + 1.2);
-
-      } catch (e) {
-        console.warn("Audio error:", e);
-      }
+      } catch (e) { console.warn("Audio error:", e); }
     }
 
     function toggleAudio() {
@@ -501,18 +541,15 @@
       if (audioEnabled) {
         btn.textContent = "🔊 音声: ON (予告チャイム有効)";
         btn.classList.add("enabled");
-        playChime(); // テスト鳴動
+        playChime();
       } else {
         btn.textContent = "🔊 音声: OFF (クリックで有効化)";
         btn.classList.remove("enabled");
       }
     }
 
-    // 画面どこでも初回クリックで音声権限をアクティブ化
     document.body.addEventListener('click', () => {
-      if (!audioEnabled) {
-        toggleAudio();
-      }
+      if (!audioEnabled) toggleAudio();
     }, { once: true });
 
     // マスター接続データ（全31便）
@@ -533,7 +570,7 @@
       { "time": "13:08", "sanoArr": "13:25", "oyamaDep": "13:57", "oyamaArr": "14:27", "takasakiDep": "13:29", "takasakiArr": "14:49", "tateArr": "13:43", "senjuDep": "13:51", "senjuArr": "14:42", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
       { "time": "14:08", "sanoArr": "14:25", "oyamaDep": "14:57", "oyamaArr": "15:27", "takasakiDep": "14:29", "takasakiArr": "15:47", "tateArr": "14:43", "senjuDep": "14:51", "senjuArr": "15:42", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
       { "time": "15:06", "sanoArr": "15:23", "oyamaDep": "15:57", "oyamaArr": "16:27", "takasakiDep": "15:29", "takasakiArr": "17:09", "tateArr": "15:41", "senjuDep": "15:51", "senjuArr": "16:42", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
-      { "time": "15:41", "sanoArr": "15:58", "oyamaDep": "16:30", "oyamaArr": "17:00", "takasakiDep": "16:31", "takasakiArr": "17:56", "tateArr": "16:16", "senjuDep": "16:18", "senjuArr": "17:12", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
+      { "time": "15:41", "sanoArr": "15:58", "oyamaDep": "16:30", "oyamaArr": "17:00", "takasakiDep": "16:31", "takasakiArr": "17:56", "tateArr": "16:16", "senjuDep": "16:18", "senjuArr": "17:24", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
       { "time": "16:09", "sanoArr": "16:26", "oyamaDep": "16:30", "oyamaArr": "17:00", "takasakiDep": "16:31", "takasakiArr": "17:56", "tateArr": "16:44", "senjuDep": "16:48", "senjuArr": "17:42", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
       { "time": "16:41", "sanoArr": "16:58", "oyamaDep": "17:10", "oyamaArr": "17:40", "takasakiDep": "17:14", "takasakiArr": "18:40", "tateArr": "17:16", "senjuDep": "17:17", "senjuArr": "18:12", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
       { "time": "17:11", "sanoArr": "17:28", "oyamaDep": "17:53", "oyamaArr": "18:23", "takasakiDep": "17:54", "takasakiArr": "19:17", "tateArr": "17:46", "senjuDep": "17:48", "senjuArr": "18:42", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
@@ -574,6 +611,8 @@
     }
 
     function updateMonitor() {
+      updateClock(); // 1秒ごとの時計＆点滅更新
+
       const now = new Date();
       const currentMin = now.getHours() * 60 + now.getMinutes();
       const currentSec = now.getSeconds();
@@ -603,14 +642,12 @@
         setRowData("m2", upcomingMy[1], isEnglishMode);
         setRowData("m3", upcomingMy[2], isEnglishMode);
 
-        // ★ 先発便の「10秒前チャイム判定」 ★
         const nextTrain = upcomingMy[0];
         const [th, tm] = nextTrain.time.split(":").map(Number);
         const trainTotalSec = (th * 60 + tm) * 60;
         const currentTotalSec = currentMin * 60 + currentSec;
         const diffSec = trainTotalSec - currentTotalSec;
 
-        // 10秒前かつ、今発車便に対して未再生の場合にチャイム鳴動
         if (diffSec === 10 && lastChimeTime !== nextTrain.time) {
           playChime();
           lastChimeTime = nextTrain.time;
@@ -621,10 +658,11 @@
       const countdownEl = document.getElementById("info-countdown");
 
       if (displayMode === 0 || displayMode === 1) {
-        // --- 北千住方面 ---
         const isEn = (displayMode === 1);
-        document.getElementById("card-badge").textContent = "TOKYO ROUTE";
-        document.getElementById("info-card-title").textContent = isEn ? "Connection for Kita-senju" : "北千住方面 接続案内";
+        document.getElementById("card-badge").textContent = isEn ? "TRANSFER" : "乗換案内";
+        document.getElementById("info-card-title").textContent = isEn 
+          ? "for Kita-senju & Asakusa ♻️ Takasaki / Oyama" 
+          : "北千住・浅草方面 ♻️ 高崎・小山方面";
         
         document.getElementById("st-origin").textContent = isEn ? "Kuzuu" : "葛生";
         document.getElementById("lbl-origin-line").textContent = isEn ? "Tobu Sano Line" : "東武佐野線";
@@ -652,9 +690,8 @@
         }
 
       } else if (displayMode === 2) {
-        // --- 佐野駅乗り換え（JR両毛線・小山方面：下り/2番線） ---
-        document.getElementById("card-badge").textContent = "OYAMA ROUTE";
-        document.getElementById("info-card-title").textContent = "佐野駅乗り換え ➔ JR両毛線（小山方面）接続";
+        document.getElementById("card-badge").textContent = "乗換案内";
+        document.getElementById("info-card-title").textContent = "小山方面 (JR両毛線) ♻️ 北千住・高崎方面";
         
         document.getElementById("st-origin").textContent = "葛生";
         document.getElementById("lbl-origin-line").textContent = "東武佐野線";
@@ -682,9 +719,8 @@
         }
 
       } else if (displayMode === 3) {
-        // --- 佐野駅乗り換え（JR両毛線・高崎方面：上り/1番線） ---
-        document.getElementById("card-badge").textContent = "TAKASAKI ROUTE";
-        document.getElementById("info-card-title").textContent = "佐野駅乗り換え ➔ JR両毛線（高崎方面）接続";
+        document.getElementById("card-badge").textContent = "乗換案内";
+        document.getElementById("info-card-title").textContent = "高崎方面 (JR両毛線) ♻️ 北千住・小山方面";
         
         document.getElementById("st-origin").textContent = "葛生";
         document.getElementById("lbl-origin-line").textContent = "東武佐野線";
