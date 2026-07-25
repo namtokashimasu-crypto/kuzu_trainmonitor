@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>葛生駅 リアルタイム発車案内ディスプレイ</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Noto+Sans+JP:wght@700;900&display=swap');
@@ -31,19 +31,27 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    /* スマホ・タブレット横表示対応ラッパー */
+    .board-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: center;
     }
 
     .board-container {
       background-color: var(--bg-board);
-      width: 100%;
-      max-width: 1100px;
+      width: 1100px; /* 基準幅を固定し、スマホでは縮小表示させる */
       border: 12px solid var(--border-outer);
       border-radius: 8px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.9);
       padding: 20px;
-      overflow: hidden;
       position: relative;
+      transform-origin: top center;
     }
 
     .board-container.is-delayed {
@@ -333,129 +341,131 @@
 </head>
 <body>
 
-  <div class="board-container" id="main-board">
-    
-    <!-- 1. 葛生駅 ホーム案内 ＆ 時計 -->
-    <div class="top-banner">
-      <div class="banner-left">
-        <div class="platform-num">1</div>
-        <div class="banner-text" id="top-banner-text">佐野・館林・浅草 方面</div>
-      </div>
-      <div class="banner-right">
-        <button class="audio-btn" id="audio-toggle-btn" onclick="toggleAudio()">🔊 音声: OFF (クリックで有効化)</button>
-        <div class="clock-box">
-          <span id="clock-hour">00</span>
-          <span class="clock-colon" id="clock-colon">:</span>
-          <span id="clock-min">00</span>
+  <div class="board-wrapper">
+    <div class="board-container" id="main-board">
+      
+      <!-- 1. 葛生駅 ホーム案内 ＆ 時計 -->
+      <div class="top-banner">
+        <div class="banner-left">
+          <div class="platform-num">1</div>
+          <div class="banner-text" id="top-banner-text">佐野・館林・浅草 方面</div>
+        </div>
+        <div class="banner-right">
+          <button class="audio-btn" id="audio-toggle-btn" onclick="toggleAudio()">🔊 音声: OFF (クリックで有効化)</button>
+          <div class="clock-box">
+            <span id="clock-hour">00</span>
+            <span class="clock-colon" id="clock-colon">:</span>
+            <span id="clock-min">00</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 2. 発車標テーブルヘッダー -->
-    <div class="board-header">
-      <div id="hdr-dept">発車時刻</div>
-      <div id="hdr-train">種別</div>
-      <div style="text-align: left; padding-left: 30px;" id="hdr-to">行先</div>
-      <div id="hdr-cars">両数</div>
-    </div>
-
-    <!-- 先発 -->
-    <div class="board-row">
-      <div class="dept-time" id="m1-time">--:--</div>
-      <div class="badge-container"><span class="train-badge badge-local" id="m1-badge">普通</span></div>
-      <div class="destination" id="m1-dest">--</div>
-      <div class="cars-info" id="m1-cars">--<span class="cars-unit" id="m1-unit">両</span></div>
-    </div>
-
-    <!-- 運行状況テロップ -->
-    <div class="notice-bar" id="notice-text">
-      【運行状況】東武佐野線・JR両毛線：平常運転
-    </div>
-
-    <!-- 次発 -->
-    <div class="board-row">
-      <div class="dept-time" id="m2-time">--:--</div>
-      <div class="badge-container"><span class="train-badge badge-local" id="m2-badge">普通</span></div>
-      <div class="destination" id="m2-dest">--</div>
-      <div class="cars-info" id="m2-cars">--<span class="cars-unit" id="m2-unit">両</span></div>
-    </div>
-
-    <!-- 次々発 -->
-    <div class="board-row" style="border: none;">
-      <div class="dept-time" id="m3-time">--:--</div>
-      <div class="badge-container"><span class="train-badge badge-local" id="m3-badge">普通</span></div>
-      <div class="destination" id="m3-dest">--</div>
-      <div class="cars-info" id="m3-cars">--<span class="cars-unit" id="m3-unit">両</span></div>
-    </div>
-
-    <!-- 3. 3方面縦並び 接続案内エリア -->
-    <div class="info-section-multi">
-      <div class="transfer-header-label" id="lbl-transfer-title">
-        <span>🔄 主要方面への乗換接続案内（館林・佐野経由）</span>
+      <!-- 2. 発車標テーブルヘッダー -->
+      <div class="board-header">
+        <div id="hdr-dept">発車時刻</div>
+        <div id="hdr-train">種別</div>
+        <div style="text-align: left; padding-left: 30px;" id="hdr-to">行先</div>
+        <div id="hdr-cars">両数</div>
       </div>
 
-      <!-- 段1: 北千住・浅草方面 -->
-      <div class="transfer-row">
-        <div class="dir-badge dir-senju" id="dir-label-1">北千住・浅草方面</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-kuzu-1">葛生発</span>
-          <span class="tf-time-main" id="r1-kuzu-dep">--:--</span>
-        </div>
-        <div class="tf-arrow">➔</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-trans-1">館林 乗り換え</span>
-          <span class="tf-time-transfer" id="r1-trans-time">--:-- / --:--</span>
-        </div>
-        <div class="tf-arrow">➔</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-arr-1">北千住 到着</span>
-          <span class="tf-time-dest" id="r1-arr-time">--:--</span>
-        </div>
-        <div class="tf-countdown" id="r1-countdown">あと --:--</div>
+      <!-- 先発 -->
+      <div class="board-row">
+        <div class="dept-time" id="m1-time">--:--</div>
+        <div class="badge-container"><span class="train-badge badge-local" id="m1-badge">普通</span></div>
+        <div class="destination" id="m1-dest">--</div>
+        <div class="cars-info" id="m1-cars">--<span class="cars-unit" id="m1-unit">両</span></div>
       </div>
 
-      <!-- 段2: 小山方面 -->
-      <div class="transfer-row">
-        <div class="dir-badge dir-oyama" id="dir-label-2">JR小山方面</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-kuzu-2">葛生発</span>
-          <span class="tf-time-main" id="r2-kuzu-dep">--:--</span>
-        </div>
-        <div class="tf-arrow">➔</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-trans-2">佐野 乗り換え</span>
-          <span class="tf-time-transfer" id="r2-trans-time">--:-- / --:--</span>
-        </div>
-        <div class="tf-arrow">➔</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-arr-2">小山 到着</span>
-          <span class="tf-time-dest" id="r2-arr-time">--:--</span>
-        </div>
-        <div class="tf-countdown" id="r2-countdown">あと --:--</div>
+      <!-- 運行状況テロップ -->
+      <div class="notice-bar" id="notice-text">
+        【運行状況】東武佐野線・JR両毛線：平常運転
       </div>
 
-      <!-- 段3: 高崎方面 -->
-      <div class="transfer-row">
-        <div class="dir-badge dir-taka" id="dir-label-3">JR高崎方面</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-kuzu-3">葛生発</span>
-          <span class="tf-time-main" id="r3-kuzu-dep">--:--</span>
+      <!-- 次発 -->
+      <div class="board-row">
+        <div class="dept-time" id="m2-time">--:--</div>
+        <div class="badge-container"><span class="train-badge badge-local" id="m2-badge">普通</span></div>
+        <div class="destination" id="m2-dest">--</div>
+        <div class="cars-info" id="m2-cars">--<span class="cars-unit" id="m2-unit">両</span></div>
+      </div>
+
+      <!-- 次々発 -->
+      <div class="board-row" style="border: none;">
+        <div class="dept-time" id="m3-time">--:--</div>
+        <div class="badge-container"><span class="train-badge badge-local" id="m3-badge">普通</span></div>
+        <div class="destination" id="m3-dest">--</div>
+        <div class="cars-info" id="m3-cars">--<span class="cars-unit" id="m3-unit">両</span></div>
+      </div>
+
+      <!-- 3. 3方面縦並び 接続案内エリア -->
+      <div class="info-section-multi">
+        <div class="transfer-header-label" id="lbl-transfer-title">
+          <span>🔄 主要方面への乗換接続案内（館林・佐野経由）</span>
         </div>
-        <div class="tf-arrow">➔</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-trans-3">佐野 乗り換え</span>
-          <span class="tf-time-transfer" id="r3-trans-time">--:-- / --:--</span>
+
+        <!-- 段1: 北千住・浅草方面 -->
+        <div class="transfer-row">
+          <div class="dir-badge dir-senju" id="dir-label-1">北千住・浅草方面</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-kuzu-1">葛生発</span>
+            <span class="tf-time-main" id="r1-kuzu-dep">--:--</span>
+          </div>
+          <div class="tf-arrow">➔</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-trans-1">館林 乗り換え</span>
+            <span class="tf-time-transfer" id="r1-trans-time">--:-- / --:--</span>
+          </div>
+          <div class="tf-arrow">➔</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-arr-1">北千住 到着</span>
+            <span class="tf-time-dest" id="r1-arr-time">--:--</span>
+          </div>
+          <div class="tf-countdown" id="r1-countdown">あと --:--</div>
         </div>
-        <div class="tf-arrow">➔</div>
-        <div class="tf-step-box">
-          <span class="tf-station-title" id="st-arr-3">高崎 到着</span>
-          <span class="tf-time-dest" id="r3-arr-time">--:--</span>
+
+        <!-- 段2: 小山方面 -->
+        <div class="transfer-row">
+          <div class="dir-badge dir-oyama" id="dir-label-2">JR小山方面</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-kuzu-2">葛生発</span>
+            <span class="tf-time-main" id="r2-kuzu-dep">--:--</span>
+          </div>
+          <div class="tf-arrow">➔</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-trans-2">佐野 乗り換え</span>
+            <span class="tf-time-transfer" id="r2-trans-time">--:-- / --:--</span>
+          </div>
+          <div class="tf-arrow">➔</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-arr-2">小山 到着</span>
+            <span class="tf-time-dest" id="r2-arr-time">--:--</span>
+          </div>
+          <div class="tf-countdown" id="r2-countdown">あと --:--</div>
         </div>
-        <div class="tf-countdown" id="r3-countdown">あと --:--</div>
+
+        <!-- 段3: 高崎方面 -->
+        <div class="transfer-row">
+          <div class="dir-badge dir-taka" id="dir-label-3">JR高崎方面</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-kuzu-3">葛生発</span>
+            <span class="tf-time-main" id="r3-kuzu-dep">--:--</span>
+          </div>
+          <div class="tf-arrow">➔</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-trans-3">佐野 乗り換え</span>
+            <span class="tf-time-transfer" id="r3-trans-time">--:-- / --:--</span>
+          </div>
+          <div class="tf-arrow">➔</div>
+          <div class="tf-step-box">
+            <span class="tf-station-title" id="st-arr-3">高崎 到着</span>
+            <span class="tf-time-dest" id="r3-arr-time">--:--</span>
+          </div>
+          <div class="tf-countdown" id="r3-countdown">あと --:--</div>
+        </div>
+
       </div>
 
     </div>
-
   </div>
 
   <script>
@@ -463,6 +473,25 @@
     let audioEnabled = false;
     let audioCtx = null;
     let lastChimeTime = "";
+
+    // スマホの横幅に応じてディスプレイ全体を自動縮小（レスポンシブスケール）
+    function adjustScale() {
+      const container = document.getElementById("main-board");
+      const wrapperWidth = window.innerWidth - 20;
+      const baseWidth = 1124; // 1100px + 左右パディング考慮
+      if (wrapperWidth < baseWidth) {
+        const scale = wrapperWidth / baseWidth;
+        container.style.transform = `scale(${scale})`;
+        // スケール縮小に伴う余白調整
+        document.body.style.height = `${container.offsetHeight * scale}px`;
+      } else {
+        container.style.transform = "none";
+        document.body.style.height = "100vh";
+      }
+    }
+
+    window.addEventListener('resize', adjustScale);
+    window.addEventListener('load', adjustScale);
 
     function updateClock() {
       const now = new Date();
@@ -550,7 +579,6 @@
         ? "for Sano, Tatebayashi, Asakusa"
         : "佐野・館林・浅草 方面";
 
-      // 下段接続セクションの日英切替
       document.getElementById("lbl-transfer-title").textContent = isEnglish
         ? "🔄 Transfer Connections for Major Destinations (via Tatebayashi / Sano)"
         : "🔄 主要方面への乗換接続案内（館林・佐野経由）";
@@ -608,6 +636,7 @@
     ];
 
     function updateMonitor() {
+      adjustScale();
       updateClock();
 
       const now = new Date();
