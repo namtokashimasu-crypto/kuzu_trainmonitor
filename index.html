@@ -16,6 +16,7 @@
       --text-gray: #aaaaaa;
       --badge-ltd: #d90429;
       --badge-local: #ffffff;
+      --badge-end: #333333;
       --delay-red: #ff3333;
       --ok-green: #00ff66;
     }
@@ -45,7 +46,7 @@
 
     .board-container {
       background-color: var(--bg-board);
-      width: 1100px; /* 基準幅を固定し、スマホでは縮小表示させる */
+      width: 1100px;
       border: 12px solid var(--border-outer);
       border-radius: 8px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.9);
@@ -199,6 +200,7 @@
     .badge-local { background-color: var(--badge-local); color: #000; }
     .badge-end { background-color: #333333; color: #aaaaaa; }
 
+    /* 行先列：ガタつき防止の最小幅指定 */
     .destination {
       font-size: 2rem;
       font-weight: 900;
@@ -207,6 +209,10 @@
       padding-left: 30px;
       line-height: 75px;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 420px;
     }
 
     .cars-info {
@@ -474,15 +480,13 @@
     let audioCtx = null;
     let lastChimeTime = "";
 
-    // スマホの横幅に応じてディスプレイ全体を自動縮小（レスポンシブスケール）
     function adjustScale() {
       const container = document.getElementById("main-board");
       const wrapperWidth = window.innerWidth - 20;
-      const baseWidth = 1124; // 1100px + 左右パディング考慮
+      const baseWidth = 1124; 
       if (wrapperWidth < baseWidth) {
         const scale = wrapperWidth / baseWidth;
         container.style.transform = `scale(${scale})`;
-        // スケール縮小に伴う余白調整
         document.body.style.height = `${container.offsetHeight * scale}px`;
       } else {
         container.style.transform = "none";
@@ -579,6 +583,7 @@
         ? "for Sano, Tatebayashi, Asakusa"
         : "佐野・館林・浅草 方面";
 
+      // 下段接続セクションの日英切替
       document.getElementById("lbl-transfer-title").textContent = isEnglish
         ? "🔄 Transfer Connections for Major Destinations (via Tatebayashi / Sano)"
         : "🔄 主要方面への乗換接続案内（館林・佐野経由）";
@@ -600,7 +605,7 @@
       document.getElementById("st-arr-3").textContent = isEnglish ? "Arr. Takasaki" : "高崎 到着";
     }
 
-    // マスター接続データ（全31便）
+    // マスター接続データ（葛生駅全31便）
     const masterConnections = [
       { "time": "05:10", "sanoArr": "05:27", "oyamaDep": "05:48", "oyamaArr": "06:16", "takasakiDep": "06:30", "takasakiArr": "08:07", "tateArr": "05:45", "senjuDep": "05:53", "senjuArr": "07:15", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
       { "time": "05:45", "sanoArr": "06:02", "oyamaDep": "06:22", "oyamaArr": "06:51", "takasakiDep": "06:30", "takasakiArr": "08:07", "tateArr": "06:20", "senjuDep": "06:27", "senjuArr": "07:44", "typeJa": "普通", "typeEn": "Local", "badge": "badge-local", "destJa": "館林", "destEn": "Tatebayashi", "cars": "2" },
